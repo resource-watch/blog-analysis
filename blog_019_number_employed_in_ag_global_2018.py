@@ -10,8 +10,9 @@ for each dataset for more details or to download the data.
 import pandas as pd
 import math
 
-# first, set the directory that you are working in
-dir = '/home/amsnyder/Github/blogs/blog_019_employment_in_ag/'
+# first, set the directory that you are working in by filling in the empty quotes below
+# example: dir = '/home/employment_in_ag'
+dir = ''
 
 # create a new sub-directory within your specified dir called 'data'
 # download and unzip the following World Bank Group datasets and put them in the
