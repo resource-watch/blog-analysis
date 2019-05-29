@@ -16,7 +16,7 @@ dir = ''
 
 # create a new sub-directory within your specified dir called 'data'
 # download and unzip the following World Bank Group datasets and put them in the
-# 'data' sun-directory
+# 'data' sub-directory
 
 '''
 1) Labor force, total:
