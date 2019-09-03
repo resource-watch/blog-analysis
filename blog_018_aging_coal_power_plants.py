@@ -1,5 +1,5 @@
 '''
-The purpose of this analysis is to pull some statistics about aging coal-fired power plants throughout the world. 
+The purpose of this analysis is to calculate statistics about aging coal-fired power plants throughout the world.
 
 These analyses involve filtering out coal-fired power plants by country and by commissioning year to determine which 
 countries have the greatest proportion of coal power plants nearing retirement age.
@@ -18,17 +18,15 @@ import zipfile
 
 # first, set the directory that you are working in by filling in the empty quotes below
 # example: dir = '/home/aging_coal_power_plants'
-dir = '/home/amsnyder/Github/blogs/blog_018_aging_coal_power_plants/'
+dir = ''
 os.chdir(dir)
 
 # download the global power plant database and unzip
 data_file = 'data'
-'''
 urllib.request.urlretrieve('http://datasets.wri.org/dataset/540dcf46-f287-47ac-985d-269b04bea4c6/resource/c240ed2e-1190-4d7e-b1da-c66b72e08858/download/globalpowerplantdatabasev120', data_file+'.zip')
 zip_ref = zipfile.ZipFile(data_file+'.zip', 'r')
 zip_ref.extractall(data_file)
 zip_ref.close()
-'''
 
 #read in global power plant database to pandas dataframe
 filename=data_file+'/global_power_plant_database.csv'
