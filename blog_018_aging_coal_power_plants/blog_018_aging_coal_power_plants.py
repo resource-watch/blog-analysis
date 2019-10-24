@@ -18,7 +18,7 @@ import zipfile
 
 # first, set the directory that you are working in by filling in the empty quotes below
 # example: dir = '/home/aging_coal_power_plants'
-dir = '/home/amsnyder/Github/blogs/blog_018_aging_coal_power_plants/'
+dir = os.getenv(HOME_DIR)+'/blogs/blog_018_aging_coal_power_plants/'
 os.chdir(dir)
 
 # download the global power plant database and unzip

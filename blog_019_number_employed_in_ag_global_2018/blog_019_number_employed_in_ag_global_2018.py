@@ -12,7 +12,7 @@ import math
 
 # first, set the directory that you are working in by filling in the empty quotes below
 # example: dir = '/home/employment_in_ag'
-dir = ''
+dir = os.getenv('HOME_DIR')+'/blogs/blog_019_employment_in_ag'
 
 # create a new sub-directory within your specified dir called 'data'
 # download and unzip the following World Bank Group datasets and put them in the
