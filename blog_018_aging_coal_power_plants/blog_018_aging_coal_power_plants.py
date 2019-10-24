@@ -18,7 +18,7 @@ import zipfile
 
 # first, set the directory that you are working in by filling in the empty quotes below
 # example: dir = '/home/aging_coal_power_plants'
-dir = ''
+dir = os.getenv(HOME_DIR)+'/blogs/blog_018_aging_coal_power_plants/'
 os.chdir(dir)
 
 # download the global power plant database and unzip
@@ -36,6 +36,8 @@ df=pd.read_csv(filename)
 df_coal= df.loc[df.primary_fuel=='Coal']
 # get coal power plant data where the commissioning year is unknown
 df_coal_unknown_yr = df_coal[df_coal.commissioning_year.isnull()]
+# get coal power plant data where the commissioning year is unknown
+df_coal_known_yr = df_coal[~df_coal.commissioning_year.isnull()]
 
 #ANALYSIS FOR WORLD
 
@@ -43,15 +45,15 @@ df_coal_unknown_yr = df_coal[df_coal.commissioning_year.isnull()]
 results = pd.DataFrame(index=['World'],columns=['num_coal_power_plants', 'num_coal_power_plants_pre_1979', 'num_coal_power_plants_unknown_yr', 'capacity_mw_all', 'capacity_mw_pre_1979', 'p_capacity_pre_1979'])
 
 #calculate the number of coal power plants in the world
-num_coal_power_plants = len(df_coal)
+num_coal_power_plants = len(df_coal_known_yr)
 #calculate the number of coal power plants in the world that have a commissioning year before 1979
-num_coal_power_plants_pre_1979 = len(df_coal[df_coal.commissioning_year<1979])
+num_coal_power_plants_pre_1979 = len(df_coal_known_yr[df_coal_known_yr.commissioning_year<1979])
 #calculate the number of coal power plants in the world with an unknown commissioning year
 num_coal_power_plants_unknown_yr = len(df_coal_unknown_yr)
 #calculate the sum of all coal capacity in the world
-global_capacity_mw_all = sum(df_coal.capacity_mw)
+global_capacity_mw_all = sum(df_coal_known_yr.capacity_mw)
 #calculate the sum of coal capacity in the world from a plant with a commissioning year before 1979
-global_capacity_mw_pre_1979 = sum(df_coal[df_coal.commissioning_year<1979].capacity_mw)
+global_capacity_mw_pre_1979 = sum(df_coal_known_yr[df_coal_known_yr.commissioning_year<1979].capacity_mw)
 
 #store calculated results in dataframe
 results.loc['World']['num_coal_power_plants'] = num_coal_power_plants
@@ -68,7 +70,7 @@ results.to_csv('stats_global.csv')
 
 # ANALYSIS BY COUNTRY
 #get list of unique countries in database
-countries = np.unique(df_coal['country'])
+countries = np.unique(df_coal_known_yr['country'])
 
 #create empty dataframe to store results of country analysis
 results = pd.DataFrame(index=countries, columns=['total_capacity_mw', 'capacity_mw_pre_1979', 'p_country_capacity_pre_1979', 'p_global_capacity_pre_1979', 'p_global_capacity_pre_1979_in_country','plants_total_num', 'plants_num_pre_1979', 'plants_num_1979_or_after', 'plants_num_unknown_yr', 'p_plants_pre_1979', 'plants_avg_age'])
@@ -76,7 +78,7 @@ results = pd.DataFrame(index=countries, columns=['total_capacity_mw', 'capacity_
 #get selected statistics for each country in the dataframe
 for country in countries:
     #first, pull only the data for the current country
-    sub_df= df_coal.loc[df_coal['country']==country]
+    sub_df= df_coal_known_yr.loc[df_coal_known_yr['country']==country]
 
     #calculating number of plants in various categories
     #get average age of plants in this country
