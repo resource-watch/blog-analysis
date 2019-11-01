@@ -31,7 +31,7 @@ If a script was used for the analysis, the code should be uploaded to this Githu
 All codes should be written using open-source tools and programming languages. Tools and modules that require a subscription should be avoided (e.g., ArcGIS).
 
 A few general rules should be followed when creating these scripts to make it easy for users to get working and reproduce results on their own computer. These steps are described, below:
-- Create a directory to store your code and do your analysis using the naming convention described above. All data inputs or analysis outputs should go into this folder. Define that directory at the beginning of each script using the following line of code (with blog_id and descriptive_title replaced by the appropriate values):
+- Create a directory to store your code and do your analysis using the naming convention described above. All data inputs or analysis outputs should go into this folder. Define that directory at the beginning of each script using the following line of code (with {blog_id} and {descriptive_title} replaced by the appropriate values):
 ```
 dir = os.getenv(BLOG_DIR)+'{blog_id}_{descriptive_title}/'
 ```
