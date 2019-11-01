@@ -16,9 +16,10 @@ import os
 import urllib
 import zipfile
 
-# first, set the directory that you are working in by filling in the empty quotes below
-# example: dir = '/home/aging_coal_power_plants'
-dir = os.getenv(HOME_DIR)+'/blogs/blog_018_aging_coal_power_plants/'
+# first, set the directory that you are working in with the dir variable
+# you can use an environmental variable, as we did, or directly enter the directory name as a string
+# example: dir = '/home/blog_018_aging_coal_power_plants'
+dir = os.getenv(BLOG_DIR)+'blog_018_aging_coal_power_plants/'
 os.chdir(dir)
 
 # download the global power plant database and unzip

@@ -10,9 +10,10 @@ for each dataset for more details or to download the data.
 import pandas as pd
 import math
 
-# first, set the directory that you are working in by filling in the empty quotes below
-# example: dir = '/home/employment_in_ag'
-dir = os.getenv('HOME_DIR')+'/blogs/blog_019_employment_in_ag'
+# first, set the directory that you are working in with the dir variable
+# you can use an environmental variable, as we did, or directly enter the directory name as a string
+# example: dir = '/home/blog_019_number_employed_in_ag_global_2018'
+dir = os.getenv('BLOG_DIR')+'blog_019_number_employed_in_ag_global_2018/'
 
 # create a new sub-directory within your specified dir called 'data'
 # download and unzip the following World Bank Group datasets and put them in the
