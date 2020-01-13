@@ -2,6 +2,7 @@ import os
 import urllib
 import pandas as pd
 import requests
+import numpy as np
 from carto.datasets import DatasetManager
 from carto.auth import APIKeyAuthClient
 
@@ -73,6 +74,12 @@ energy_df = pd.DataFrame.from_records(json_data)[['year', 'country', 'energy_con
 merged_df = electricity_df.merge(energy_df, left_on=['year', 'country'], right_on=['year', 'country'])
 # calculate the electricity consumption per total energy consumption by dividing the two columns
 merged_df['electricity_per_total_energy'] = merged_df.electricity_consumption_ktoe/merged_df.energy_consumption_ktoe
+# If the total energy consumption was 0 and the electricity consumption has a non-zero value, the result of this analysis
+# will be a value of infinity. This is not a logical value to use, so we will replace these with NaN.
+merged_df = merged_df.replace(np.inf, np.nan)
+
+#convert electricity_per_total_energy column to float
+merged_df.electricity_per_total_energy=merged_df.electricity_per_total_energy.astype('float64')
 
 ## Save and upload results to Carto
 
@@ -92,7 +99,7 @@ Annual Rate of Change for Energy Intensity
 # enter Resource Watch dataset ID for Energy Intensity data
 energy_intensity_dataset_id = '2c444596-2be3-4786-bdfc-24010f99b21e'
 # create SQL query to pull all data from API
-query = 'SELECT * from {}'.format(energy_consumption_dataset_id)
+query = 'SELECT * from {}'.format(energy_intensity_dataset_id)
 sql_query = urllib.parse.quote(query)
 # generate url for API call
 url = 'https://api.resourcewatch.org/query?sql={}'.format(sql_query)
@@ -127,6 +134,12 @@ for year in years[1:]:
     # append the relevant columns to the final dataframe which will store all of the annual rate of change results
     final_df=final_df.append(merged_df[final_cols], ignore_index=True)
 
+# If the energy intensity used in the denominator of the calculation was 0 and the numerator was non-zero, the result of this analysis
+# will be a value of infinity. This is not a logical value to use, so we will replace these with NaN.
+final_df = final_df.replace(np.inf, np.nan)
+
+#convert energy_intensity_annual_rate_of_change column to float
+final_df.energy_intensity_annual_rate_of_change=final_df.energy_intensity_annual_rate_of_change.astype('float64')
 
 ## Save and upload results to Carto
 
@@ -134,7 +147,7 @@ for year in years[1:]:
 sub_request_name = 'req_009b_annual_rate_of_change_for_energy_intensity'
 # save the results of this analysis to a csv
 csv_loc = data_dir+sub_request_name+'.csv'
-merged_df.to_csv(csv_loc, index=False)
+final_df.to_csv(csv_loc, index=False)
 # upload this table to Carto
 upload_to_carto(csv_loc)
 
