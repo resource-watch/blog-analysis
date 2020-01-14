@@ -81,6 +81,9 @@ merged_df = merged_df.replace(np.inf, np.nan)
 #convert electricity_per_total_energy column to float
 merged_df.electricity_per_total_energy=merged_df.electricity_per_total_energy.astype('float64')
 
+#convert energy_intensity_annual_rate_of_change from proportion to percent in new column
+merged_df['electricity_per_total_energy_percent']=merged_df.electricity_per_total_energy * 100
+
 ## Save and upload results to Carto
 
 # set the name to save this table as
@@ -140,6 +143,9 @@ final_df = final_df.replace(np.inf, np.nan)
 
 #convert energy_intensity_annual_rate_of_change column to float
 final_df.energy_intensity_annual_rate_of_change=final_df.energy_intensity_annual_rate_of_change.astype('float64')
+
+#convert energy_intensity_annual_rate_of_change from proportion to percent in new column
+final_df['energy_intensity_annual_rate_of_change_percent']=final_df.energy_intensity_annual_rate_of_change * 100
 
 ## Save and upload results to Carto
 
