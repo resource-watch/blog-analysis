@@ -9,7 +9,7 @@ This analysis involves two calculations:
 
 2) **The national rate of improvement in energy intensity**
     - This was done with the [Energy Intensity](https://resourcewatch.org/data/explore/2c444596-2be3-4786-bdfc-24010f99b21e) dataset on [Resource Watch](https://resourcewatch.org/).
-    - For each year of data, every country's annual rate of change in energy intensity from the previous year was calculated. 
+    - For each year of data, every country's annual rate of change in energy intensity was calculated.
     - This calculation can be found in the "Annual Rate of Change for Energy Intensity" section of the [Python script](https://github.com/resource-watch/blog-analysis/blob/master/req_009_energy_decarbonization_leaders/req_009_energy_decarbonization_leaders_analysis.py).
 
 Please see the [Python script](https://github.com/resource-watch/blog-analysis/blob/master/req_009_energy_decarbonization_leaders/req_009_energy_decarbonization_leaders_analysis.py) for the full analysis.
