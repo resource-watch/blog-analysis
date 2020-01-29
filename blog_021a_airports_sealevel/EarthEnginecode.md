@@ -1,3 +1,4 @@
+```
 // import sealevel rise image
 // The sealevel rise dataset comes from Climate Central. It identifies areas vulnerable to coastal flooding and sealevel rise
 // learn more the dataset here: https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
@@ -441,3 +442,4 @@ print('Airports affected in Antarctica, 0.5m' ,airports_05m_Antarctica_altitude.
 // The results above include airports that are closed, we then cleaned up the results from the previously exported Airports_1m_allcontinents_threaten.csv file, by checking if the airport is still in operation.
 // Some airports are not captured by the continential boundary shapefile, we manually added them to the spreadsheet.
 // Please find the final analysis results in the spreadsheets on Github.
+```
