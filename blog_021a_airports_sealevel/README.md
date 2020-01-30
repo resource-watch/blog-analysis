@@ -17,4 +17,4 @@ This analysis was done using Google Earth Engine, a free geospatial analysis sys
 
 If you have a Google Earth Engine account, the code used for the analysis can be viewed [in Google Earth Engine](https://code.earthengine.google.com/d9c15a9bcd09461d13fe671bc3afff94). If you do not have an account, you can still view a copy of the code [here](https://github.com/resource-watch/blog-analysis/blob/master/blog_021a_airports_sealevel/EarthEnginecode.md).
 
-You can find the results of this analysis in the [Final Results folder](https://github.com/resource-watch/blog-analysis/tree/master/blog_021a_airports_sealevel/final_results).
+You can find the results of this analysis in the [Final Results folder](https://github.com/resource-watch/blog-analysis/tree/master/blog_021a_airports_sealevel/Final%20Results).
