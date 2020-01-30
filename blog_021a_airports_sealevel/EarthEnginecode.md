@@ -1,21 +1,19 @@
 ```
-// import sealevel rise image
-// The sealevel rise dataset comes from Climate Central. It identifies areas vulnerable to coastal flooding and sealevel rise
-// learn more the dataset here: https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
+// import the sea level rise image
+// The sea level rise dataset comes from Climate Central. It identifies areas vulnerable to coastal flooding and sea level rise
+// learn more about the dataset here: https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
 
-var sealevel = sealevel
-
-// examine sealevel data
-
+ // Note that the sea level rise image location has been removed from this code.
+ // If you would like access to this dataset, please contact Climate Central: https://sealevel.climatecentral.org/
+var sealevel = ee.Image("");
+    
 // there are 10 bands each correspond to different sea level rise scenarios.
-
-print(sealevel)
 
 // select sea level rise 1m
 
 var sealevel_1m = sealevel.select('b2');  // band 2 represents 1m scenario.
 
-// display sealevel rise 1m on the map
+// display sea level rise 1m on the map
 
 Map.addLayer(sealevel_1m,
 
@@ -28,7 +26,7 @@ Map.addLayer(sealevel_1m,
 
 var sealevel_05m = sealevel.select('b1'); // b1 represents 0.5 m scenario.
 
-// display sealevel rise 1m on the map
+// display sea level rise 1m on the map
 
 Map.addLayer(sealevel_05m,
 
@@ -37,7 +35,7 @@ Map.addLayer(sealevel_05m,
            "Sea Level Rise, 0.5 m", false);
 
 // begin analysis
-// the objective of this analysis is to find airports that are threatened by sealevel rise at 0.5m and 1m level.
+// the objective of this analysis is to find airports that are threatened by sea level rise at 0.5m and 1m level.
 // this analysis involves three steps:
 // 1) find airports with altitude below 0.5m and 1m using the "altitude" field from airport dataset.
 
@@ -45,12 +43,10 @@ Map.addLayer(sealevel_05m,
 
 // 3) Check which of these airports that are below 0.5m elevation or 1m elevation are prediced to have sea water inside the 1000m buffer in their respective sea level rise scenarios. This is done using the Areas Vulnerable to Coastal Flooding & Sea Level Rise (m) on Resource Watch (https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise).
 
-// examine airports data
+// Import airports data
+var airports = ee.FeatureCollection("users/resourcewatch/com_002_airports_edit");
 // this dataset is released by OpenFlights in 2017 and has a global coverage of airports
 // learn more about the dataset on Resource Watch: https://resourcewatch.org/data/explore/Airports
-// note that since there are more than 5000 airports, the entire dataset cannot be printed for examination together.
-// instead, we can examine the first 10 airports to understand dataset fields
-print(airports.limit(10))
 
 // Select airports with altitude below 0.5m. The airport altitude is reported in feet, so we will look for airports with an altitude below 1.64042 feet (0.5m * 3.38084ft/m)"
 
@@ -75,13 +71,13 @@ function PointBufferingALGORITHM1( AnyGivenPointFEATURE )
       }
 
 
-// get the scale for sealevel rise
+// get the scale for sea level rise
 
 var scale = sealevel_05m.projection().nominalScale().getInfo()
 
 
 
-// write a function that checks if airports are being effected by sealevel rise , 0.5m
+// write a function that checks if airports are being effected by sea level rise , 0.5m
 function checkIfAffected_05m( airport ) {
 
  // check if there are any 0.5 m sea level rise pixels within the airport buffered area
@@ -121,14 +117,14 @@ var airports_05m_risk_altitude = airports_05m_risk_altitude.filterMetadata('name
 // convert feature collection to a list
 var airports_05m_risk_altitude_list = airports_05m_risk_altitude.toList(altitudeb05m_buffer_1000_affected_05m.size());
 
-print(airports_05m_risk_altitude_list)// the element number of this list indicates 48 airports currently below sealevel 0.5m will be affected by sealevel rise 0.5m
+print(airports_05m_risk_altitude_list)// the element number of this list indicates 48 airports currently below sea level 0.5m will be affected by sea level rise 0.5m
 
 // print only airport names in a list
 var list_05m = ee.List(airports_05m_risk_altitude.aggregate_array('name'))
 
-print(list_05m, "Airports Threatened by Sealevel Rise 0.5m ")
+print(list_05m, "Airports Threatened by sea level Rise 0.5m ")
 
-Map.addLayer(airports_05m_risk_altitude, {color : 'ff0000'}, 'airports threatened by sealevel rise, 0.5m')
+Map.addLayer(airports_05m_risk_altitude, {color : 'ff0000'}, 'airports threatened by sea level rise, 0.5m')
 
 // export result
 
@@ -188,14 +184,14 @@ var airports_1m_risk_altitude = airports_1m_risk_altitude.filterMetadata('name',
 
 var airports_1m_risk_altitude_list = airports_1m_risk_altitude.toList(altitudeb1m_buffer_1000_affected_1m.size());
 
-print(airports_1m_risk_altitude_list)// the element number of this list indicates 85 airports currently below sealevel 1m will be affected by sealevel rise 1 m
+print(airports_1m_risk_altitude_list)// the element number of this list indicates 85 airports currently below sea level 1m will be affected by sea level rise 1 m
 
 // print only airport names in a list
 var list_1m = ee.List(airports_1m_risk_altitude.aggregate_array('name'))
 
-print(list_1m, "Airports Threatened by Sealevel Rise 1m ")
+print(list_1m, "Airports threatened by sea level rise 1m ")
 
-Map.addLayer(airports_1m_risk_altitude, {color : 'ff0000'}, 'airports threatened by sealevel rise, 1m')
+Map.addLayer(airports_1m_risk_altitude, {color : 'ff0000'}, 'airports threatened by sea level rise, 1m')
 
 
 
@@ -215,11 +211,8 @@ Export.table.toDrive({
 // find how many airports at 0.5 m and 1m case are threatened for each continent
 
 // import continent dataset. See metadata here:  https://www.arcgis.com/home/item.html?id=a3cb207855b348a297ab85261743351d
-
+var continents = ee.FeatureCollection("users/resourcewatch/region_shapefiles/continents");
 var allcontinents = ee.Feature(continents);
-
-print(allcontinents, "Continents")//examine the continents
-
 
 // create variables for each continent
 
