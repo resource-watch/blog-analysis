@@ -22,7 +22,7 @@ Map.addLayer(sealevel_1m,
 
 
 // select the band that corresponds to sea level rise of 0.5 meters (m)
-// band a (ba) represents the 1m scenario
+// band 1 (b1) represents the 1m scenario
 var sealevel_05m = sealevel.select('b1');
 
 // display sea level rise 1m on the map
