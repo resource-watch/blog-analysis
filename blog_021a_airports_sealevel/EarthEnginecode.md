@@ -8,10 +8,9 @@
 var sealevel = ee.Image("");
     
 // there are 10 bands each correspond to different sea level rise scenarios.
-
-// select sea level rise 1m
-
-var sealevel_1m = sealevel.select('b2');  // band 2 represents 1m scenario.
+// select the band that corresponds to sea level rise of 1 meter (m)
+// band 2 (b2) represents the 1m scenario
+var sealevel_1m = sealevel.select('b2');
 
 // display sea level rise 1m on the map
 
@@ -22,9 +21,9 @@ Map.addLayer(sealevel_1m,
            "Sea Level Rise, 1m", false);
 
 
-// select sea level rise 0.5 m
-
-var sealevel_05m = sealevel.select('b1'); // b1 represents 0.5 m scenario.
+// select the band that corresponds to sea level rise of 0.5 meters (m)
+// band a (ba) represents the 1m scenario
+var sealevel_05m = sealevel.select('b1');
 
 // display sea level rise 1m on the map
 
@@ -300,139 +299,100 @@ Export.table.toDrive({
 
 // South America
 
-
-
-
-// 1m
-
+// 1 meter
 var  airports_1m_SouthAmerica_altitude = saveAllJoin.apply (airports_1m_risk_altitude, SouthAmerica, spatialFilter);
-
 print('Airports affected in South America, 1m', airports_1m_SouthAmerica_altitude.size())
-
 airports_1m_SouthAmerica_altitude = airports_1m_SouthAmerica_altitude.set('Continent', "South America")
 
-
-//0.5 m
-
+// 0.5 meters
 var airports_05m_SouthAmerica_altitude = saveAllJoin.apply (airports_05m_risk_altitude, SouthAmerica, spatialFilter);
-
 print('Airports affected in South America, 0.5m',airports_05m_SouthAmerica_altitude.size())
+
+
+
 // Africa
 
-// 1m
-
+// 1 meter
 var airports_1m_Africa_altitude = saveAllJoin.apply (airports_1m_risk_altitude, Africa, spatialFilter);
-
 print('Airports affected in Africa, 1m', airports_1m_Africa_altitude.size())
 
-// 0.5m
-
+// 0.5 meters
 var airports_05m_Africa_altitude = saveAllJoin.apply (airports_05m_risk_altitude, Africa, spatialFilter);
-
 print('Airports affected in Africa, 0.5m',airports_05m_Africa_altitude.size())
+
+
 
 // Europe
 
-
-// 1m
-
+// 1 meter
 var airports_1m_Europe_altitude = saveAllJoin.apply (airports_1m_risk_altitude, Europe, spatialFilter);
-
 print('Airports affected in Europe, 1m',airports_1m_Europe_altitude.size())
 
-// 0.5 m
-
+// 0.5 meters
 var airports_05m_Europe_altitude = saveAllJoin.apply (airports_05m_risk_altitude, Europe, spatialFilter);
-
 print('Airports affected in Europe, 0.5m',airports_05m_Europe_altitude.size())
 
 // Asia
 
-
-// 1m
-
+// 1 meter
 var airports_1m_Asia_altitude= saveAllJoin.apply (airports_1m_risk_altitude, Asia, spatialFilter);
-
 print('Airports affected in Asia, 1m',airports_1m_Asia_altitude.size())
 
-// 0.5m
-
+// 0.5 meters
 var airports_05m_Asia_altitude= saveAllJoin.apply (airports_05m_risk_altitude, Asia, spatialFilter);
-
 print('Airports affected in Asia, 0.5m',airports_05m_Asia_altitude.size())
 
 
 
 // Australia
 
-
-
-// 1m
-
+// 1 meter
 var airports_1m_Australia_altitude= saveAllJoin.apply (airports_1m_risk_altitude, Australia, spatialFilter);
-
 print('Airports affected in Australia, 1m', airports_1m_Australia_altitude.size())
 
-// 0.5 m
-
+// 0.5 meters
 var airports_05m_Australia_altitude= saveAllJoin.apply (airports_05m_risk_altitude, Australia, spatialFilter);
-
 print('Airports affected in Australia, 0.5m',airports_05m_Australia_altitude.size())
 
 
 
 // Oceania
 
-
-
-// 1m
-
+// 1 meter
 var airports_1m_Oceania_altitude= saveAllJoin.apply (airports_1m_risk_altitude, Oceania, spatialFilter);
-
 print('Airports affected in Oceania, 1 m',airports_1m_Oceania_altitude.size())
 
-// 0.5m
-
+// 0.5 meters
 var airports_05m_Oceania_altitude= saveAllJoin.apply (airports_05m_risk_altitude, Oceania, spatialFilter);
-
 print('Airports affected in Oceania, 0.5 m',airports_05m_Oceania_altitude.size())
 
 
 
 // North America
 
-
-
-// 1m
-
+// 1 meter
 var airports_1m_NorthAmerica_altitude= saveAllJoin.apply (airports_1m_risk_altitude, NorthAmerica, spatialFilter);
-
 print('Airports affected in North America, 1 m',airports_1m_NorthAmerica_altitude.size())
 
-// 0.5m
-
+// 0.5 meters
 var airports_05m_NorthAmerica_altitude= saveAllJoin.apply (airports_05m_risk_altitude, NorthAmerica, spatialFilter);
-
 print('Airports affected in North America, 0.5 m',airports_05m_NorthAmerica_altitude.size())
 
 
 
 // Antarctica
 
-
-// 1m
-
+// 1 meter
 var airports_1m_Antarctica_altitude =  saveAllJoin.apply (airports_1m_risk_altitude, Antarctica, spatialFilter);
-
 print('Airports affected in Antarctica, 1 m' ,airports_1m_Antarctica_altitude.size())
 
-// 0.5 m
-
+// 0.5 meters
 var airports_05m_Antarctica_altitude =  saveAllJoin.apply (airports_05m_risk_altitude, Antarctica, spatialFilter);
-
 print('Airports affected in Antarctica, 0.5m' ,airports_05m_Antarctica_altitude.size())
 
-// The results above include airports that are closed, we then cleaned up the results from the previously exported Airports_1m_allcontinents_threaten.csv file, by checking if the airport is still in operation.
-// Some airports are not captured by the continential boundary shapefile, we manually added them to the spreadsheet.
+
+
+// The Airports dataset includes some airports that have closed since the dataset was produced. To improve the accuracy of the results, each airport that was affected by one of the sea level rise sceniarios (0.5 meters or 1 meter sea level rise) was manually checked to ensure it was still in operation. This was done by checking the airports in the output results file (Airports_1m_allcontinents_threaten.csv) through an online search. 
+// Some of the airports were not captured by the World Continents shapefile, especially those located on islands. The airports that were not captured by World Continents shapefile were manually added to the list for the appropriate continent.
 // Please find the final analysis results in the spreadsheets on Github.
 ```
