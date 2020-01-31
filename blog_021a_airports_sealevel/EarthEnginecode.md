@@ -49,7 +49,7 @@ var sealevel_1m = sealevel.select('b2');
 // Display sea level rise 1m on the map
 Map.addLayer(sealevel_1m,
            {bands :["b2"],palette : ['000080'], opacity:0.5},
-           "Sea Level Rise, 1m", false);
+           "Sea Level Rise, 1m", true);
 
 
 // Import airports data
@@ -120,7 +120,7 @@ print("Airports Threatened by sea level Rise 0.5m ", list_05m)
 // This shows that 48 airports will be affected by 0.5m of sea level rise.
 
 // Visualize these airports
-Map.addLayer(airports_05m_risk_altitude, {color : 'ff0000'}, 'Airports threatened by sea level rise, 0.5m')
+Map.addLayer(airports_05m_risk_altitude, {color : 'ff0000'}, 'Airports threatened by sea level rise, 0.5m', false)
 
 // Export results
 Export.table.toDrive({
@@ -169,7 +169,7 @@ print("Airports Threatened by sea level Rise 1m ", list_1m)
 // This shows that 85 airports will be affected
 
 // Visualize these airports
-Map.addLayer(airports_1m_risk_altitude, {color : 'ff0000'}, 'airports threatened by sea level rise, 1m')
+Map.addLayer(airports_1m_risk_altitude, {color : 'ff0000'}, 'Airports threatened by sea level rise, 1m', true)
 
 // Export results
 Export.table.toDrive({
