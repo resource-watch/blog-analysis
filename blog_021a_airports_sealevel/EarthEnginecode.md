@@ -23,13 +23,25 @@
 
 // The sea level rise dataset comes from Climate Central. It identifies areas vulnerable to coastal 
 // flooding and sea level rise
-// learn more about the dataset on Resource Watch: https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
+// learn more about the dataset on Resource Watch: 
+// https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
 
-// Note: the sea level rise image location has been removed from this code.
-// If you would like access to this dataset, please contact Climate Central: https://sealevel.climatecentral.org/
 var sealevel = ee.Image("");
+// Note: the sea level rise image location has been removed from this code.
+// If you would like access to this dataset, please contact Climate Central: 
+// https://sealevel.climatecentral.org/
 
-// there are 10 bands that each correspond to different sea level rise scenarios.
+// There are 10 bands that each correspond to different sea level rise scenarios.
+
+// select the band that corresponds to sea level rise of 0.5 meters (m)
+// band 1 (b1) represents the 0.5m scenario
+var sealevel_05m = sealevel.select('b1');
+
+// display sea level rise 0.5m on the map
+Map.addLayer(sealevel_05m,
+           {bands :["b1"],palette : ['000080'], opacity:0.5},
+           "Sea Level Rise, 0.5 m", false);
+           
 // select the band that corresponds to sea level rise of 1 meter (m)
 // band 2 (b2) represents the 1m scenario
 var sealevel_1m = sealevel.select('b2');
@@ -38,16 +50,6 @@ var sealevel_1m = sealevel.select('b2');
 Map.addLayer(sealevel_1m,
            {bands :["b2"],palette : ['000080'], opacity:0.5},
            "Sea Level Rise, 1m", false);
-
-
-// select the band that corresponds to sea level rise of 0.5 meters (m)
-// band 1 (b1) represents the 1m scenario
-var sealevel_05m = sealevel.select('b1');
-
-// display sea level rise 1m on the map
-Map.addLayer(sealevel_05m,
-           {bands :["b1"],palette : ['000080'], opacity:0.5},
-           "Sea Level Rise, 0.5 m", false);
 
 
 // Import airports data
