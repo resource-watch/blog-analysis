@@ -190,7 +190,7 @@ Export.table.toDrive({
 // The first step is to manually assign a continent to each affected airport in the results files:
 // Airports_1m_altitude_threaten.csv and Airports_05m_altitude_threaten.csv
 // The continent assigned to each affected airport can be viewed in the results files uploaded to Github:
-// https://github.com/resource-watch/blog-analysis/tree/master/blog_021a_airports_sealevel/Final%20Results
+// https://github.com/resource-watch/blog-analysis/tree/master/blog_021_airports_affected_by_sea_level_rise/Final%20Results
 
 // Using the assigned continents, the number of airports that were affected by 0.5 and 1m sea level rise for 
 // each continent were then counted in Excel.
