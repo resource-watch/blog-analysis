@@ -10,7 +10,7 @@ The first objective of this analysis was to find airports that would be threaten
 4) The Airports dataset includes some airports that have closed since the dataset was produced. To improve the accuracy of the results, each airport that was affected by one of the sea level rise sceniarios (0.5 meters or 1 meter sea level rise) was manually checked to ensure it was still in operation. This was done through an online search. 
 
 The second objective of the analysis was to determine which continent would be most impacted by sea level rise, based on how many affected airports were found on each continent. This analysis was done for both the 0.5 meters and 1 meter sea level rise scenarios. The following steps were taken:
-1) The airports affected by sea level rise that were found in the first part of the analysis were spatially joined to the [World Continents shapefile](https://www.arcgis.com/home/item.html?id=a3cb207855b348a297ab85261743351d) produced by Esri.   
+1) The airports affected by sea level rise that were found in the first part of the analysis were spatially intersected with the [World Continents shapefile](https://www.arcgis.com/home/item.html?id=a3cb207855b348a297ab85261743351d) produced by Esri.   
 2) Some of the airports were not captured by the World Continents shapefile, especially those located on islands. The airports that were not captured by World Continents shapefile were manually added to the list for the appropriate continent.
 
 This analysis was done using Google Earth Engine, a free geospatial analysis system by Google. While the sytem is free, you need to sign up with a Google account in order to use it, which can be done [here](https://earthengine.google.com/).
@@ -18,3 +18,5 @@ This analysis was done using Google Earth Engine, a free geospatial analysis sys
 If you have a Google Earth Engine account, the code used for the analysis can be viewed [in Google Earth Engine](https://code.earthengine.google.com/d9c15a9bcd09461d13fe671bc3afff94). If you do not have an account, you can still view a copy of the code [here](https://github.com/resource-watch/blog-analysis/blob/master/blog_021a_airports_sealevel/EarthEnginecode.md).
 
 You can find the results of this analysis in the [Final Results folder](https://github.com/resource-watch/blog-analysis/tree/master/blog_021a_airports_sealevel/Final%20Results).
+
+###### Note: This dataset analysis was done by [Tina Huang](https://www.wri.org/profile/tina-huang), and QC'd by [Amelia Snyder](https://www.wri.org/profile/amelia-snyder).
