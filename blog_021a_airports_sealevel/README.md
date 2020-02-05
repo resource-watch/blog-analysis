@@ -13,7 +13,7 @@ The second objective of the analysis was to determine which continent would be m
 
 This analysis was done using Google Earth Engine, a free geospatial analysis system by Google. While the system is free, you need to sign up with a Google account in order to use it, which can be done [here](https://earthengine.google.com/).
 
-If you have a Google Earth Engine account, the code used for the analysis can be viewed [in Google Earth Engine](https://code.earthengine.google.com/d9c15a9bcd09461d13fe671bc3afff94). If you do not have an account, you can still view a copy of the code [here](https://github.com/resource-watch/blog-analysis/blob/master/blog_021a_airports_sealevel/EarthEnginecode.md).
+If you have a Google Earth Engine account, the code used for the analysis can be viewed [in Google Earth Engine](https://code.earthengine.google.com/5b7bd8baed8d29cb46f787afaeef41eb). If you do not have an account, you can still view a copy of the code [here](https://github.com/resource-watch/blog-analysis/blob/master/blog_021a_airports_sealevel/EarthEnginecode.md).
 
 You can find the results of this analysis in the [Final Results folder](https://github.com/resource-watch/blog-analysis/tree/master/blog_021a_airports_sealevel/Final%20Results).
 
