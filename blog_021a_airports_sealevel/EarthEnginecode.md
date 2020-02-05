@@ -2,15 +2,27 @@
 // The objective of this analysis is to find airports that would be threatened by 0.5m of sea level rise
 // and those that would be affected by and 1m of sea level rise.
 // This analysis involves four steps:
-1) Find airports at an altitude below 0.5 meters and those at an altitude below 1 meter using the "altitude" field from the [Airports](https://resourcewatch.org/data/explore/com002-Airports_replacement) dataset on [Resource Watch](https://resourcewatch.org/).
-2) The Airports dataset represents each airport as a single point, defined by a pair of coordinates. In order to better represent the area covered by each airport, a buffer with a radius of 1000 meters was created around the point representing each airport. This buffered area is a conservative approximation and likely underestimates the actual size of the airports.  
-3) Check which of the airports that are below an altitude of 0.5 meters are predicted to have sea water inside the 1000 meter buffer. Do the same for the airports with an altitude below 1 meter. The area covered by seawater was represented by the [Areas Vulnerable to Coastal Flooding & Sea Level Rise (m)](https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise) dataset on [Resource Watch](https://resourcewatch.org/).
-4) The Airports dataset includes some airports that have closed since the dataset was produced. To improve the accuracy of the results, each airport that was affected by one of the sea level rise sceniarios (0.5 meters or 1 meter sea level rise) was manually checked to ensure it was still in operation. This was done through an online search.
+// 1) Find airports at an altitude below 0.5 meters and those at an altitude below 1 meter using the "altitude" 
+//    field from the [Airports](https://resourcewatch.org/data/explore/com002-Airports_replacement) dataset on 
+//    [Resource Watch](https://resourcewatch.org/).
+// 2) The Airports dataset represents each airport as a single point, defined by a pair of coordinates. In order
+//    to better represent the area covered by each airport, a buffer with a radius of 1000 meters was created 
+//    around the point representing each airport. This buffered area is a conservative approximation and likely 
+//    underestimates the actual size of the airports.  
+// 3) Check which of the airports that are below an altitude of 0.5 meters are predicted to have sea water inside 
+//    the 1000 meter buffer. Do the same for the airports with an altitude below 1 meter. The area covered by seawater
+//    was represented by the [Areas Vulnerable to Coastal Flooding & Sea Level Rise (m)](https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise) dataset 
+//    on [Resource Watch](https://resourcewatch.org/).
+// 4) The Airports dataset includes some airports that have closed since the dataset was produced. To improve the 
+//    accuracy of the results, each airport that was affected by one of the sea level rise sceniarios (0.5 meters 
+//    or 1 meter sea level rise) was manually checked to ensure it was still in operation. This was 
+//    done through an online search.
 
 
 // Import the sea level rise data
 
-// The sea level rise dataset comes from Climate Central. It identifies areas vulnerable to coastal flooding and sea level rise
+// The sea level rise dataset comes from Climate Central. It identifies areas vulnerable to coastal 
+// flooding and sea level rise
 // learn more about the dataset on Resource Watch: https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
 
 // Note: the sea level rise image location has been removed from this code.
