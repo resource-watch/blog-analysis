@@ -22,8 +22,7 @@
 // Import the sea level rise data
 
 // The sea level rise dataset comes from Climate Central. It identifies areas vulnerable to coastal 
-// flooding and sea level rise
-// learn more about the dataset on Resource Watch: 
+// flooding and sea level rise. Learn more about the dataset on Resource Watch: 
 // https://resourcewatch.org/data/explore/Projected-Sea-Level-Rise
 
 var sealevel = ee.Image("");
@@ -54,16 +53,15 @@ Map.addLayer(sealevel_1m,
 
 // Import airports data
 
-// This dataset is released by OpenFlights in 2017 and has a global coverage of airports.
-// learn more about the dataset on Resource Watch: https://resourcewatch.org/data/explore/Airports
+// This dataset is released by OpenFlights in 2017 and has global coverage of airports.
+// Learn more about the dataset on Resource Watch: https://resourcewatch.org/data/explore/Airports
 
 var airports = ee.FeatureCollection("users/resourcewatch/com_002_airports_edit");
 
-
 // Select airports with altitude below 0.5m. The airport altitude is reported in feet,
-// so we will look for airports with an altitude below 1.64042 feet (0.5m * 3.38084ft/m)"
+// so we will look for airports with an altitude below 1.64042 feet (0.5m * 3.38084ft/m).
 var airports_b05m = airports.filter(ee.Filter.lt('altitude',1.64042))
-print(airports_b05m) //169 airports are below 0.5 m
+print(airports_b05m) //169 airports are below an altitutde of 0.5m
 
 // Visualize airports below altitude 0.5m
 Map.addLayer(airports_b05m, {color : 'ffff00'}, 'Airports altitude below 0.5m (yellow)', false)
@@ -134,7 +132,8 @@ Export.table.toDrive({
 
 // Now we will repeat the analysis to see which airports would be affected by 1m of sea level rise,
 // instead of 0.5m sea level rise.
-// select airports with altitude below 1m
+// Select airports with altitude below 1m. The airport altitude is reported in feet,
+// so we will look for airports with an altitude below 3.38084 feet (1m * 3.38084ft/m).
 var airports_b1m = airports.filter(ee.Filter.lt('altitude',3.38084))
 
 // Visualize airports below altitude 1m
