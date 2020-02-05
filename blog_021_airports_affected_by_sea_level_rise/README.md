@@ -14,7 +14,7 @@ The second objective of the analysis was to determine which continent would be m
 
 This analysis was done using Google Earth Engine, a free geospatial analysis system by Google. While the system is free, you need to sign up with a Google account in order to use it, which can be done [here](https://earthengine.google.com/).
 
-If you have a Google Earth Engine account, the code used for the analysis can be viewed [in Google Earth Engine](https://code.earthengine.google.com/5b7bd8baed8d29cb46f787afaeef41eb). If you do not have an account, you can still view a copy of the code [here](https://github.com/resource-watch/blog-analysis/blob/master/blog_021_airports_affected_by_sea_level_rise/EarthEnginecode.md).
+If you have a Google Earth Engine account, the code used for the analysis can be viewed [in Google Earth Engine](https://code.earthengine.google.com/8811701c61f853191c79c125249433be). If you do not have an account, you can still view a copy of the code [here](https://github.com/resource-watch/blog-analysis/blob/master/blog_021_airports_affected_by_sea_level_rise/EarthEnginecode.md).
 
 You can find the results of this analysis in the [Final Results folder](https://github.com/resource-watch/blog-analysis/blob/master/blog_021_airports_affected_by_sea_level_rise/Final%20Results).
 
