@@ -13,5 +13,8 @@ at the national and state/provincial level from 1950 through 2019. This analysis
 1. Download the tempearture data from NCEP using [download_temperature_data_and_shift.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/download_temperature_data_and_shift.py)
 2. Download country bounds from GADM using [download_country_and_state_boundaries.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/download_country_and_state_boundaries.py)
 3. Separate a combined NetCDF of the monthly temperature data into individual monthly data [separate_netcdf_by_month.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/separate_netcdf_by_month.py)
-4. Savea separate file for the contiguous United States using QGIS, described in the file: 
-5. Calculate the average monthly
+4. Savea separate file for the contiguous United States using QGIS, described in the file [separate_contiguous_united_states.txt](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/separate_contiguous_united_states.txt)
+5. Calculate the average monthly surface temperature using the file [calculate_average_monthly_temperature.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/calculate_average_monthly_temperature.py)
+6. Average monthly results to annual using the file [average_monthly_to_annual.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/average_monthly_to_annual.py)
+
+The results of this analysis can be viewed in the directory [Results](https://github.com/resource-watch/blog-analysis/tree/master/req_016_facebook_average_surface_temperature/Results) where all temperature values are given in degrees Celsius.
