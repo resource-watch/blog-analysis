@@ -16,6 +16,9 @@ from rasterstats import zonal_stats
 import os
 from datetime import date, timedelta
 
+#Create folder to save monthly NetCDF files to
+if not os.path.exists('MonthlyNetCDF'):
+    os.makedirs('MonthlyNetCDF')
 
 # Define NetCDF name
 nc_fo = 'air.mon.mean.centered.nc'
