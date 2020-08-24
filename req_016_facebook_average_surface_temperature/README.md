@@ -21,4 +21,4 @@ The results of this analysis can be viewed in the directory [Results](https://gi
 
 The citations for the GHCN CAMS dataset are below
 - GHCN Gridded V2 data provided by the NOAA/OAR/ESRL PSL, Boulder, Colorado, USA, from their Web site at https://psl.noaa.gov/ 
-- Fan, Y., and H. van den Dool (2008), A global monthly land surface air temperature analysis for 1948-present, J. Geophys. Res., 113, D01103, doi:10.1029/2007JD008470.
+- Fan, Y., and H. van den Dool (2008), A global monthly land surface air temperature analysis for 1948-present, J. Geophys. Res., 113, D01103, [doi:10.1029/2007JD008470](doi:10.1029/2007JD008470).
