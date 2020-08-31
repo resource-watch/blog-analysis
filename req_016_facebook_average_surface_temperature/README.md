@@ -14,8 +14,10 @@ at the national and state/provincial level from 1950 through 2019. This analysis
 2. Download country bounds from GADM using [download_country_and_state_boundaries.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/download_country_and_state_boundaries.py)
 3. Separate a combined NetCDF of the monthly temperature data into individual monthly data [separate_netcdf_by_month.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/separate_netcdf_by_month.py)
 4. Savea separate file for the contiguous United States using QGIS, described in the file [separate_contiguous_united_states.txt](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/separate_contiguous_united_states.txt)
-5. Calculate the average monthly surface temperature using the file [calculate_average_monthly_temperature.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/calculate_average_monthly_temperature.py)
-6. Average monthly results to annual using the file [average_monthly_to_annual.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/average_monthly_to_annual.py)
+5. Calculate the average monthly surface temperature using the file [AverageTemperature.ipynb](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/AverageTemperature.ipynb)
+6. Converted from Kelvin to Celsius [convert_from_kelvin_to_celsius.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/convert_from_kelvin_to_celsius.py)
+7. Average monthly results to annual using the file [average_monthly_to_annual.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/average_monthly_to_annual.py)
+8. Calculate a linear regression [regression_and_change.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/regression_and_change.py)
 
 The results of this analysis can be viewed in the directory [Results](https://github.com/resource-watch/blog-analysis/tree/master/req_016_facebook_average_surface_temperature/Results) where all temperature values are given in degrees Celsius.
 
