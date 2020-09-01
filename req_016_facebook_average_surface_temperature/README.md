@@ -1,5 +1,5 @@
 # Average Monthly and Annual Temperature for France, Germany, the United Kingdom, and the United States from 1950 through 2019
-This file describes analysis that was done by the Resource Watch team for Facebook to be used to display increased temperatures in the four countries listed above. The analysis was originally performed by [Kristine Lister](https://www.wri.org/profile/kristine-lister) and was QC'd by [blank]
+This file describes analysis that was done by the Resource Watch team for Facebook to be used to display increased temperatures in the four countries listed above. The analysis was originally performed by [Kristine Lister](https://www.wri.org/profile/kristine-lister) and was QC'd by Taufiq Rashid.
 
 This analysis was done using the [GHCN CAMS Gridded 2m Temperature (Land)](https://psl.noaa.gov/data/gridded/data.ghcncams.html) dataset, 
 which provides monthly average surface temperature measured 2 meters above surface level in degrees Celsius from January 1948 through May 2020 at 0.5 × 0.5 degree 
