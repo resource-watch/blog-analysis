@@ -4,6 +4,6 @@ This file describes the process of separating the contiguous United States into 
 2. Open file for United States administrative level 0 (national level) boundaries, stored in the file req_016_facebook_average_surface_temperature/CountryShapes/USA_adm0/USA_adm0.shp
 3. Using the QGIS command "Geometry -> Multipart to Singleparts", select the input as the USA_adm0 layer and save to temporary file
 4. Using the QGIS select tool, highlight only the contiguous United States regions (everything except Hawaii and Alaska)
-5. Save selected features to a new file "req_016_facebook_average_surface_temperature/CountryShapes/USA_adm0_contiguous/USA_adm0_contiguous.shp"
-6. Run the QGIS command "Geoprocessing Tools -> Dissolve" and select USA_adm0_contiguous as the input, dissolve by "NAME_0"
+5. Save selected features to a new file "req_016_facebook_average_surface_temperature/CountryShapes/USA_adm0_contiguous/USA_adm0_contiguous_temporary.shp"
+6. Run the QGIS command "Geoprocessing Tools -> Dissolve" and select USA_adm0_contiguous_temporary as the input, dissolve by "NAME_0"
 7. Save results over the file "req_016_facebook_average_surface_temperature/CountryShapes/USA_adm0_contiguous/USA_adm0_contiguous.shp"
