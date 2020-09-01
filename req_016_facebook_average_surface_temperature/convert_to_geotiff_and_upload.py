@@ -28,10 +28,6 @@ NUM_ASSETS_AT_ONCE = 50
 #Set variable to pause every once in a while to allow all assets to upload
 PAUSE_FOR_OVERLOAD = True
 
-#Read no data value
-with rasterio.open('air.mon.mean.centered.tif', 'r') as src:
-    NDV = src.nodatavals[0]
-
 #Change directory
 os.chdir('MonthlyNetCDF')
 
@@ -60,6 +56,10 @@ for i, in_file in enumerate(in_file_list):
     #Convert to geotiff
     cmd = ('gdal_translate -a_srs EPSG:4326 -of GTiff -a_nodata {} NETCDF:"{}":air {}.tif'.format(NDV, in_file,out_file_name))
     subprocess.check_output(cmd,shell=True)
+    
+    #Read no data value
+    with rasterio.open('{}.tif'.format(out_file_name), 'r') as src:
+        NDV = src.nodatavals[0]
 
     #Upload geotiff to staging bucket
     cmd = ('gsutil -m cp {}.tif {}'.format(out_file_name,GS_BUCKET))
