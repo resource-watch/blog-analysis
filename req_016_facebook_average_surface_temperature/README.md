@@ -18,7 +18,7 @@ at the national and state/provincial level from 1950 through 2019. This analysis
 6. Calculate the average monthly surface temperature using the file [AverageTemperature.ipynb](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/AverageTemperature.ipynb)
 7. Converted from Kelvin to Celsius [convert_from_kelvin_to_celsius.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/convert_from_kelvin_to_celsius.py)
 8. Average monthly results to annual using the file [average_monthly_to_annual.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/average_monthly_to_annual.py)
-9. Calculate a linear regression [regression_and_change.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/regression_and_change.py)
+9. Calculate a linear regression through time and change from 1950-1970 average to 2009-2019 average [regression_and_change.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/regression_and_change.py)
 
 The results of this analysis can be viewed in the directory [Results](https://github.com/resource-watch/blog-analysis/tree/master/req_016_facebook_average_surface_temperature/Results) where all temperature values are given in degrees Celsius.
 
