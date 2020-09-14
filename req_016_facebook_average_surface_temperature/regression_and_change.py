@@ -55,4 +55,4 @@ for country_file in country_file_list:
         out_df.at[i,'LinReg_1970_2019_R_Squared'] = model.score(years_1970.reshape((-1, 1)), row_temp_data)
     
     #Save results
-    out_df.to_csv(country_file.replace('annual','change'),index=False)
+    out_df.to_csv(country_file.replace('annual','regression_and_change'),index=False)
