@@ -6,10 +6,12 @@ import pandas as pd
 
 # Define working folder
 out_folder = 'results'
+if not os.path.exists(out_folder):
+    os.makedirs(out_folder)
 os.chdir(out_folder)
 
 # Define countries and states to loop over
-file_list = ['Average_Temperature_Country_Level.csv','Average_Temperature_State_Level.csv']
+file_list = ['Average_Temperature_Country_Level.csv','Average_Temperature_State_Level.csv','Average_Temperature_Global_Level.csv']
 
 #Define years for linear regression
 years = np.arange(1950,2020)
@@ -18,8 +20,12 @@ years_1970 = np.arange(1970,2020)
 for file_name in file_list:
     country_df = pd.read_csv(file_name)
     
+    if 'Global' in file_name:
+        country_df['Region'] = 'Global'
+    
     #Separate attribute columns and data
     attribute_columns = [x for x in list(country_df) if x not in map(str, years)]
+    attribute_columns = [x for x in attribute_columns if x not in ['system:index','.geo']]
     out_df = country_df.copy()[attribute_columns]
     
     #Get temperature columns and data
