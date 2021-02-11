@@ -1,4 +1,4 @@
-# Average Annual Temperature for Select Countries
+# Average Annual Temperature for Select Countries and Global Scale
 This file describes analysis that was done by the Resource Watch team for Facebook to be used to display increased temperatures for select countries in their newly launched [Climate Science Information Center](https://www.facebook.com/hubs/climate_science_information_center). Check out the Climate Science Information Center (CSIC) for up to date information on climate data in your area from trusted sources. And go to [Resource Watch](https://resourcewatch.org/) to explore over 300 datasets covering topics from food, forests, water, oceans, cities, energy, climate, and society. This analysis was originally performed by [Kristine Lister](https://www.wri.org/profile/kristine-lister) and was QC'd by Taufiq Rashid.
 
 This analysis was done using the [GHCN CAMS Gridded 2m Temperature (Land)](https://psl.noaa.gov/data/gridded/data.ghcncams.html) dataset, 
@@ -8,12 +8,13 @@ resolution and was created by the Climate Prediction Center at the National Cent
 The GHCN CAMS dataset is created by interpolating measurements from combination two large individual data sets of station observations collected from the 
 Global Historical Climatology Network version 2 and the Climate Anomaly Monitoring System (GHCN + CAMS).
 
-The goal of this analysis is to calculate the average monthly and annual temperatures in four countries (France, Germany, the United Kingdom, and the United States)
-at the national and state/provincial level from 1950 through 2019. This analysis was done in five steps:
+The goal of this analysis is to calculate the average monthly and annual temperatures in numerous countries at the national and state/provincial level and globally from 1950 through 2019. This analysis was done in five steps:
 1. Preprocess the data using [preprocess_data.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/preprocess_data.py). Here we download the tempearture data from NCEP, shift the longitude range to match -180 to 180, average from monthly to annual average temperature, and separate one NetCDF file for all the years to one NetCDF for each year.
 2. Upload annual temperature files to Google Earth Engine [convert_to_geotiff_and_upload.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/convert_to_geotiff_and_upload.py)
 3. Calculate the average annual surface temperature using the file [Calculate_Annual_Temperature.ipynb](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/Calculate_Annual_Temperature.ipynb)
 4. Calculate a linear regression through time and change from 1950-1970 average to 2009-2019 average [regression_and_change.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/regression_and_change.py)
+
+Note for the global analysis, constraints from Earth Engine on the complexity of shapes did not allow us to clip the temperature data to land boundaries. Therefore for the global average, the Resource Watch team calculated the average value of the available temperature data, which does cover some non-land coastal areas. 
 
 The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/master/req_016_facebook_average_surface_temperature/results) where all temperature values are given in degrees Celsius.
 
