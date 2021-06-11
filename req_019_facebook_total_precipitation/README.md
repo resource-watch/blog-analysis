@@ -16,14 +16,14 @@ The first objective of this analysis is to calculate the average annual precipit
 5. Calculate national and state/provincial level mean annual precipitation.
 6. Export the results as CSV files.
 
-The second objective of this analysis is to calculate the rate of precipitation change precipitation 1901-2019 at the state/provincial level. This analysis was done using the [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py ). This analysis was done in the following steps:
+The second objective of this analysis is to calculate the rate of precipitation change precipitation 1901-2019 at the state/provincial level. *This objective followed the method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 8)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#8).* This analysis was done using the [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py ). This analysis was done in the following steps:
 1. Calculate the slope of each precipitation trend from annual precipitation (in mms) by fiting an ordinary least-squares regression.
 2. Multiplie the slope by the length of the entire period of record to get total change in mms. 
 3. Convert the total change to percent change, using average precipitation during the standard baseline period (1901-2000) as the denominator.
 4. Export the results as CSV files.
-*This objective followed the method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 8)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#8).*
 
-The third objective of this analysis is to calculate a smooth precipitation time series from 1901 to 2019 at the state/provincial level. This analysis was done using the [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py ). The smoothed precipitation time series was created using a 9-point binomial filter where 4 years on each side of a given value are averaged with decreasing weights further from the center year ([Aubury and Luk, 1995](www.doc.ic.ac.uk/~wl/papers/bf95.pdf)). *This objective followed the smooth trend method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 7)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#7).*
+
+The third objective of this analysis is to calculate a smooth precipitation time series from 1901 to 2019 at the state/provincial level. *This objective followed the smooth trend method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 7)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#7).* This analysis was done using the [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py ). The smoothed precipitation time series was created using a 9-point binomial filter where 4 years on each side of a given value are averaged with decreasing weights further from the center year ([Aubury and Luk, 1995](www.doc.ic.ac.uk/~wl/papers/bf95.pdf)).
 
 ### Results
 The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results) where all precipitation values are given in millimeter.
