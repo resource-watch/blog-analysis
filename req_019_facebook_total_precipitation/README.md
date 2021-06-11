@@ -16,7 +16,7 @@ The first objective of this analysis is to calculate the average annual precipit
 5. Calculate national and state/provincial level mean annual precipitation.
 6. Export the results as CSV files.
 
-The second objective of this analysis is to calculate the rate of precipitation change precipitation 1901-2019 at the state/provincial level. *This objective followed the method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 8)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#8).* This analysis was done using the [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py ). This analysis was done in the following steps:
+The second objective of this analysis is to calculate the rate of precipitation change 1901-2019 at the state/provincial level. *This objective followed the method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 8)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#8).* This analysis was done using the [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py ). This analysis was done in the following steps:
 1. Calculate the slope of each precipitation trend from annual precipitation (in mms) by fiting an ordinary least-squares regression.
 2. Multiplie the slope by the length of the entire period of record to get total change in mms. 
 3. Convert the total change to percent change, using average precipitation during the standard baseline period (1901-2000) as the denominator.
