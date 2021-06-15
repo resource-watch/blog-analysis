@@ -1,4 +1,4 @@
-# Average Annual Precipitation for Select Countries and State Scale
+# Average Annual Precipitation for Select Countries and States
 This file describes analysis that was done by the Resource Watch team for Facebook to be used to display annual precipitation for select countries in their newly launched [Climate Science Information Center](https://www.facebook.com/hubs/climate_science_information_center). The goal of the analysis is to demonstrate trends in total precipitation at the state and national level for select countries from 1901 through 2019. 
 
 Check out the Climate Science Information Center (CSIC) for up to date information on climate data in your area from trusted sources. And go to [Resource Watch](https://resourcewatch.org/) to explore over 300 datasets covering topics from food, forests, water, oceans, cities, energy, climate, and society. This analysis was originally performed by [Weiqi Zhou](https://www.wri.org/profile/weiqi-zhou) and was QC'd by [Kristine Lister](https://www.wri.org/profile/kristine-lister).
