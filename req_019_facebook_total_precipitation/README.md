@@ -1,5 +1,7 @@
 # Average Annual Precipitation for Select Countries and State Scale
-This file describes analysis that was done by the Resource Watch team for Facebook to be used to display annual precipitation for select countries in their newly launched [Climate Science Information Center](https://www.facebook.com/hubs/climate_science_information_center). Check out the Climate Science Information Center (CSIC) for up to date information on climate data in your area from trusted sources. And go to [Resource Watch](https://resourcewatch.org/) to explore over 300 datasets covering topics from food, forests, water, oceans, cities, energy, climate, and society. This analysis was originally performed by [Weiqi Zhou](https://www.wri.org/profile/weiqi-zhou) and was QC'd by [Kristine Lister](https://www.wri.org/profile/kristine-lister).
+This file describes analysis that was done by the Resource Watch team for Facebook to be used to display annual precipitation for select countries in their newly launched [Climate Science Information Center](https://www.facebook.com/hubs/climate_science_information_center). The goal of the anaylysis is to demonstrate trends in total precipitation at the state and national level for select countries from 1901 through 2019. 
+
+Check out the Climate Science Information Center (CSIC) for up to date information on climate data in your area from trusted sources. And go to [Resource Watch](https://resourcewatch.org/) to explore over 300 datasets covering topics from food, forests, water, oceans, cities, energy, climate, and society. This analysis was originally performed by [Weiqi Zhou](https://www.wri.org/profile/weiqi-zhou) and was QC'd by [Kristine Lister](https://www.wri.org/profile/kristine-lister).
 
 ### Data Sources
 This analysis was done using the [Global Precipitation Climatology Centre (GPCC)](https://www.dwd.de/EN/ourservices/gpcc/gpcc.html) dataset, 
@@ -17,8 +19,8 @@ The first objective of this analysis is to calculate the average annual precipit
 6. Export the results as CSV files.
 
 The second objective of this analysis is to calculate the rate of precipitation change 1901-2019 at the state/provincial level. *This objective followed the method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 8)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#8).* This analysis was done using the file [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py), following the steps:
-1. Calculate the slope of each precipitation trend from annual precipitation (in mms) by fiting an ordinary least-squares regression.
-2. Multiplie the slope by the length of the entire period of record to get total change in mms. 
+1. Calculate the slope of each precipitation trend from annual precipitation (in millimeters) by fiting an ordinary least-squares regression.
+2. Multiplie the slope by the length of the entire period of record to get total change in millimeters. 
 3. Convert the total change to percent change, using average precipitation during the standard baseline period (1901-2000) as the denominator.
 4. Export the results as CSV files.
 
