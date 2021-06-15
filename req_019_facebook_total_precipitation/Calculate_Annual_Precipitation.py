@@ -30,17 +30,16 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 dataset_name = 'req_019_facebook_total_precipitation' #check
 
 logger.info('Executing script for dataset: ' + dataset_name)
-# create a new sub-directory within your specified dir called 'data'
-# within this directory, create files to store raw and processed data
 # first, set the directory that you are working in with the path variable
 path = os.path.abspath(os.path.join(os.getenv('BLOG_DIR'),dataset_name))
-#move to this directory
+# move to this directory
 os.chdir(path)
 # create a new sub-directory within your specified dir called 'data'
 # within this directory, create files to store raw and processed data
 data_dir = 'data'
 if not os.path.exists(data_dir):
     os.mkdir(data_dir)
+
 
 '''
 Download data and save to your data directory
@@ -84,12 +83,15 @@ n_layers=[int(rasterio.open(file).meta['count']/12) for file in processed_data_f
 # calculate annual total precipitation
 for id, file in enumerate(processed_data_file,start=0):
     with rasterio.open(file) as src0:
-        meta=src0.meta
+        # update metedata for annual aggregation
+        meta = src0.meta
         meta.update(count = 1)
         meta.update(nodata = meta['nodata']*12)
+        # sum and export annual total precipitation as tif file
         for i in range(int(src0.meta['count']/12)):
             with rasterio.open(processed_data_annual[sum(n_layers[:id])+i], 'w', **meta) as dst:
-                dst.write_band(1,np.sum(src0.read(range((i*12+1),(i*12+13))),axis=0))
+                dst.write_band(1,np.sum(src0.read(range((i*12+1), (i*12+13))), axis = 0))
+
 
 '''
 Upload processed data to Google Earth Engine
@@ -110,7 +112,7 @@ ee.Initialize(auth)
 # set pyramiding policy for GEE upload
 pyramiding_policy = 'MEAN' #check
 
-# Create an image collection where we will put the processed data files in GEE
+# create an image collection where we will put the processed data files in GEE
 image_collection = f'projects/resource-watch-gee/Facebook/PrecipitationAnalysis/GPCC_annual'
 ee.data.createAsset({'type': 'ImageCollection'}, image_collection)
 
@@ -123,8 +125,7 @@ print('Privacy set to public.')
 band_ids = ['b1']
 
 task_id = []
-uri=gcs_uris[0]
-# Upload processed data files to GEE
+# upload processed data files to GEE
 for uri in gcs_uris:
     # generate an asset name for the current file by using the filename (minus the file type extension)
     asset_name = f'projects/resource-watch-gee/Facebook/PrecipitationAnalysis/GPCC_annual/{os.path.basename(uri)[:-4]}'
@@ -143,6 +144,9 @@ util_cloud.gcs_remove(gcs_uris, gcs_bucket=gcsBucket)
 logger.info('Files deleted from Google Cloud Storage.')
 
 
+'''
+Data processing on Google Earth Engine
+'''
 # Initialize earth engine
 try:
     ee.Initialize()
@@ -150,10 +154,10 @@ except Exception as e:
     ee.Authenticate()
     ee.Initialize()
     
-# Load image collection
+# load image collection
 GPCC_annual = ee.ImageCollection("projects/resource-watch-gee/Facebook/PrecipitationAnalysis/GPCC_annual")
 
-# Save projection (crs, crsTransform, scale)
+# save projection (crs, crsTransform, scale)
 projection = GPCC_annual.first().projection().getInfo()
 projection_gee = GPCC_annual.first().projection()
 crs = projection.get('crs')
@@ -163,57 +167,45 @@ print('crs: ', crs)
 print('crsTransform: ', crsTransform)
 print('scale: ', scale)
 
-# Convert ImageCollection to Imagw
+# convert ImageCollection to Image
 band_names = ee.List([str(i) for i in np.arange(1891,2020)])
 GPCC_annual_img = GPCC_annual.toBands()
 GPCC_annual_img = GPCC_annual_img.rename(band_names)
 
-
-# Define countries to calculate statistics for
+# define countries to calculate statistics for
 country_list = ["USA","GBR","FRA","DEU","CAN", "SWE", "BRA", "MEX", "BEL", "IRL", "NLD", "NGA", "SAU", "ZAF", "ESP", "IND", "IDN", "TWN"]
+# load country and state shapefiles
 countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
 states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
-# country_ios=country_list[0]
+
 for country_ios in country_list:
-    # National-level analysis
-    # Load country data, filter to desired ISO Codes
+    # national-level analysis
+    # load country data, filter to desired ISO Codes
     country = countries.filterMetadata('GID_0', 'equals', ee.String(country_ios))
-    # country.getInfo()
 
-    # Calculate national precipitation indicator
-    # national_indicator = top10th_years_img.reduceRegions(country, ee.Reducer.mean(), scale = scale, tileScale = 16)
-    # national_indicator = national_indicator.select(national_indicator.propertyNames(),retainGeometry=False)
-    # national_indicator = national_indicator.map(lambda x: x.select(x.propertyNames(), retainGeometry = False))
-
-    # Export to Google Drive
+    # export to Google Drive
     output_name='GPCC_annual_country_'+country_ios
     output_folder='Facebook'
     export_results_task = ee.batch.Export.table.toDrive(
-        collection = GPCC_annual_img.reduceRegions(country, ee.Reducer.mean(), scale = scale, tileScale = 16).select(ee.List(['GID_0','NAME_0']).cat(band_names),retainGeometry=False), 
+        collection = GPCC_annual_img.reduceRegions(country, ee.Reducer.mean(), scale = scale, tileScale = 16).select(ee.List(['GID_0','NAME_0']).cat(band_names), retainGeometry = False), 
         description = output_name, 
         fileNamePrefix = output_name,
         folder = output_folder)
-    # Start the task
+    # start the task
     export_results_task.start()
 
 
-    # State-level analysis
-    # Load state data, filter to desired ISO Codes
+    # state-level analysis
+    # load state data, filter to desired ISO Codes
     state = states.filterMetadata('GID_0', 'equals', ee.String(country_ios))
 
-    # Calculate state precipitation indicator
-    # state_indicator = top10th_years_img.reduceRegions(state, ee.Reducer.mean(), scale = scale, tileScale = 16)
-    # state_indicator = state_indicator.select(state_indicator.propertyNames(),retainGeometry=False)
-    # state_indicator = state_indicator.map(lambda x: x.select(x.propertyNames(), retainGeometry = False))
-
-    # Export to Google Drive
+    # export to Google Drive
     output_name='GPCC_annual_state_'+country_ios
     output_folder='Facebook'
     export_results_task = ee.batch.Export.table.toDrive(
-        collection = GPCC_annual_img.reduceRegions(state, ee.Reducer.mean(), scale = scale, tileScale = 16).select(ee.List(['CC_1','ENGTYPE_1','GID_0','GID_1','HASC_1','NAME_0','NAME_1','NL_NAME_1','TYPE_1','VARNAME_1']).cat(band_names),retainGeometry=False), 
-        # ['CC_1','ENGTYPE_1','GID_0','GID_1','HASC_1','NAME_0','NAME_1','NL_NAME_1','TYPE_1','VARNAME_1']
+        collection = GPCC_annual_img.reduceRegions(state, ee.Reducer.mean(), scale = scale, tileScale = 16).select(ee.List(['CC_1','ENGTYPE_1','GID_0','GID_1','HASC_1','NAME_0','NAME_1','NL_NAME_1','TYPE_1','VARNAME_1']).cat(band_names), retainGeometry = False), 
         description = output_name, 
         fileNamePrefix = output_name,
         folder = output_folder)
-    # Start the task
+    # start the task
     export_results_task.start()
