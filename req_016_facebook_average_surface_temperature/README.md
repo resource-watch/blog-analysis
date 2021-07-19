@@ -1,23 +1,40 @@
-# Average Annual Temperature for Select Countries and Global Scale
-This file describes analysis that was done by the Resource Watch team for Facebook to be used to display increased temperatures for select countries in their newly launched [Climate Science Information Center](https://www.facebook.com/hubs/climate_science_information_center). Check out the Climate Science Information Center (CSIC) for up to date information on climate data in your area from trusted sources. And go to [Resource Watch](https://resourcewatch.org/) to explore over 300 datasets covering topics from food, forests, water, oceans, cities, energy, climate, and society. This analysis was originally performed by [Kristine Lister](https://www.wri.org/profile/kristine-lister) and was QC'd by Taufiq Rashid.
+# Average Annual Precipitation for Select Countries and States
+This file describes analysis that was done by the Resource Watch team for Facebook to be used to display annual precipitation for select countries in their newly launched [Climate Science Information Center](https://www.facebook.com/hubs/climate_science_information_center). The goal of the analysis is to demonstrate trends in total precipitation at the state and national level for select countries from 1901 through 2019. 
 
-This analysis was done using the [GHCN CAMS Gridded 2m Temperature (Land)](https://psl.noaa.gov/data/gridded/data.ghcncams.html) dataset, 
-which provides monthly average surface temperature measured 2 meters above surface level in degrees Celsius from January 1948 through May 2020 at 0.5 × 0.5 degree 
-resolution and was created by the Climate Prediction Center at the National Centers for Environmental Prediction of the National Oceanic and Atmospheric Administation ([NCEP](https://www.ncep.noaa.gov/)).
+Check out the Climate Science Information Center (CSIC) for up to date information on climate data in your area from trusted sources. And go to [Resource Watch](https://resourcewatch.org/) to explore over 300 datasets covering topics from food, forests, water, oceans, cities, energy, climate, and society. This analysis was originally performed by [Weiqi Zhou](https://www.wri.org/profile/weiqi-zhou) and was QC'd by [Kristine Lister](https://www.wri.org/profile/kristine-lister).
 
-The GHCN CAMS dataset is created by interpolating measurements from combination two large individual data sets of station observations collected from the 
-Global Historical Climatology Network version 2 and the Climate Anomaly Monitoring System (GHCN + CAMS).
+### Data Sources
+This analysis was done using the [Global Precipitation Climatology Centre (GPCC)](https://www.dwd.de/EN/ourservices/gpcc/gpcc.html) dataset, 
+which provides monthly land-surface precipitation from rain-gauges built on GTS-based and historical data from January 1891 through December 2019 at 0.25 × 0.25 degree resolution. The Global Precipitation Climatology Centre (GPCC) is operated by [Deutscher Wetterdienst (DWD)](https://www.dwd.de/EN/Home/home_node.html) under the auspices of the [World Meteorological Organization (WMO)](https://public.wmo.int/en)
 
-The goal of this analysis is to calculate the average monthly and annual temperatures in numerous countries at the national and state/provincial level and globally from 1950 through 2019. This analysis was done in five steps:
-1. Preprocess the data using [preprocess_data.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/preprocess_data.py). Here we download the tempearture data from NCEP, shift the longitude range to match -180 to 180, average from monthly to annual average temperature, and separate one NetCDF file for all the years to one NetCDF for each year.
-2. Upload annual temperature files to Google Earth Engine [convert_to_geotiff_and_upload.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/convert_to_geotiff_and_upload.py)
-3. Calculate the average annual surface temperature using the file [Calculate_Annual_Temperature.ipynb](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/Calculate_Annual_Temperature.ipynb)
-4. Calculate a linear regression through time and change from 1950-1970 average to 2009-2019 average [regression_and_change.py](https://github.com/resource-watch/blog-analysis/blob/master/req_016_facebook_average_surface_temperature/regression_and_change.py)
+The GPCC Full Data Monthly Version 2020 for the period 1891 to 2019 based on quality-controlled data from all stations in GPCC's data base available at the month of regard with a maximum number of more than 53,000 stations in 1986/1987. This product is optimized for best spatial coverage and use for water budget studies. 
 
-Note for the global analysis, constraints from Earth Engine on the complexity of shapes did not allow us to clip the temperature data to land boundaries. Therefore for the global average, the Resource Watch team calculated the average value of the available temperature data, which does cover some non-land coastal areas. 
+### Methods
+The first objective of this analysis is to calculate the average annual precipitation in numerous countries at the national and state/provincial level from 1891 through 2019. This analysis was done using the file [Calculate_Annual_Precipitation.py](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Calculate_Annual_Precipitation.py), following the steps:
+1. Download the precipitation data from GPCC. 
+2. Convert the netCDF files to GeoTIFF files.
+3. Aggregate annual total precipitation data using monthly precipitation data.
+4. Upload proccessed annual precipitation data to Google Earth Engine.
+5. Calculate national and state/provincial level mean annual precipitation.
+6. Export the results as CSV files.
 
-The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/master/req_016_facebook_average_surface_temperature/results) where all temperature values are given in degrees Celsius.
+The second objective of this analysis is to calculate the rate of precipitation change 1901-2019 at the state/provincial level. *This objective followed the method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 8)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#8).* This analysis was done using the file [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py), following the steps:
+1. Calculate the slope of each precipitation trend from annual precipitation (in millimeters) by fiting an ordinary least-squares regression.
+2. Multiplie the slope by the length of the entire period of record to get total change in millimeters. 
+3. Convert the total change to percent change, using average precipitation during the standard baseline period (1901-2000) as the denominator.
+4. Export the results as CSV files.
 
-The citations for the GHCN CAMS dataset are below
-- GHCN Gridded V2 data provided by the NOAA/OAR/ESRL PSL, Boulder, Colorado, USA, from their Web site at https://psl.noaa.gov/ 
-- Fan, Y., and H. van den Dool (2008), A global monthly land surface air temperature analysis for 1948-present, J. Geophys. Res., 113, D01103, [doi:10.1029/2007JD008470](doi:10.1029/2007JD008470).
+
+The third objective of this analysis is to calculate a smooth precipitation time series from 1901 to 2019 at the state/provincial level. *This objective followed the smooth trend method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 7)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#7).* This analysis was done using the file [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py). The smoothed precipitation time series was created using a 9-point binomial filter where 4 years on each side of a given value are averaged with decreasing weights further from the center year ([Aubury and Luk, 1995](www.doc.ic.ac.uk/~wl/papers/bf95.pdf)).
+
+### Results
+The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results) where all precipitation values are given in millimeter.
+- The original country level data was named: GPCC_annual_country_\{*country ISO code*\}.csv
+- The original state/provincial level data was named: GPCC_annual_state_\{*country ISO code*\}.csv
+- The state/provincial level regression and rate change result was named: GPCC_annual_country_\{*country ISO code*\}\_regression_and_rate_change.csv
+- The state/provincial level smoothed data was named: GPCC_annual_country_\{*country ISO code*\}\_smooth.csv
+
+### References
+- Schneider, Udo; Becker, Andreas; Finger, Peter; Rustemeier, Elke; Ziese, Markus. (2020). GPCC Full Data Monthly Product Version 2020 at 0.25°: Monthly Land-Surface Precipitation from Rain-Gauges built on GTS-based and Historical Data. DOI: [10.5676/DWD_GPCC/FD_M_V2020_025](10.5676/DWD_GPCC/FD_M_V2020_025)
+
+- Environmental Protection Agency (EPA). (2021). Report on the Environment. U.S. and Global Mean Temperature and Precipitation. Retrieved from [https://cfpub.epa.gov/roe/indicator.cfm?i=89](https://cfpub.epa.gov/roe/indicator.cfm?i=89)
