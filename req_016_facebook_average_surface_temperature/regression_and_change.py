@@ -42,7 +42,7 @@ for file_name in file_list:
     
     for i,row in temperature_data.iterrows():
         #Check if data is available for all years
-        if ~row.isnull().all():
+        if ~row.isnull().any():
         
             #Calculate change in average temperature over different time period lengths
             change = np.mean(row[[str(x) for x in np.arange(2009,2021)]])-np.mean(row[[str(x) for x in np.arange(1950,1971)]])

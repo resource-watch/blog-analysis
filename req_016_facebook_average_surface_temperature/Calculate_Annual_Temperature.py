@@ -165,8 +165,7 @@ GHCN_CAMS_annual_img = GHCN_CAMS_annual.toBands()
 GHCN_CAMS_annual_img = GHCN_CAMS_annual_img.rename(band_names)
 GHCN_CAMS_annual_img = GHCN_CAMS_annual_img.add(ee.Image.constant(-273.15))
 
-# define countries to calculate statistics for
-country_list = ["USA","GBR","FRA","DEU","CAN", "SWE", "BRA", "MEX", "BEL", "IRL", "NLD", "NGA", "SAU", "ZAF", "ESP", "IND", "IDN", "TWN"]
+
 # load country and state shapefiles
 countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
 states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
@@ -174,12 +173,18 @@ states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
 # Define function for calculating average temperature over feature collection
 def calculate_average_temperature_per_feature(feature_collection, output_name, output_folder):
     #Calculate average temperature anomaly for each year for each country
-    average_annual_temperature = GHCN_CAMS_annual_img.reduceRegions(feature_collection, 
-                                                          ee.Reducer.mean(), 
-                                                          crs=crs, crsTransform=crsTransform)
+    def calculate_average_temperature(feature):
+        feature = ee.Feature(feature)
+        feature_average_annual_temperature = GHCN_CAMS_annual_img.reduceRegion(ee.Reducer.mean(), feature.geometry(), crs=crs, 
+                                                                                crsTransform=crsTransform, tileScale=2, 
+                                                                                bestEffort=True, maxPixels=1e13)
+        feature = feature.set(feature_average_annual_temperature)
+        return feature
+    average_annual_temperature = feature_collection.map(calculate_average_temperature)
     #Drop geometry information
     average_annual_temperature = average_annual_temperature.map(lambda x: x.select(x.propertyNames(),
                                                                            retainGeometry=False))
+    average_annual_temperature = ee.FeatureCollection(average_annual_temperature).sort('GID_0')
 
     #Export to Google Drive
     export_results_task = ee.batch.Export.table.toDrive(
@@ -191,17 +196,10 @@ def calculate_average_temperature_per_feature(feature_collection, output_name, o
     export_results_task.start()
 
 
-    
-#Define countries to calculate statistics for
-country_list = ["USA","GBR","FRA","DEU","CAN", "SWE", "BRA", "MEX", "BEL", "IRL", "NLD", "NGA", 
-                "SAU", "ZAF", "ESP", "IND", "IDN", "TWN"]
-country_list = ee.List(country_list)
-
 
 #Load country data, filter to desired ISO Codes
 countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
-countries = ee.FeatureCollection(country_list.map(lambda x: countries.filterMetadata('GID_0','equals',
-                                                                                     ee.String(x)))).flatten()
+
 # #Use function to calculate temperature anomalies and export
 calculate_average_temperature_per_feature(countries,
                                           output_name='Average_Temperature_Country_Level',
@@ -210,8 +208,7 @@ calculate_average_temperature_per_feature(countries,
 
 #Load state data, filter to desired ISO Codes
 states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
-states = ee.FeatureCollection(country_list.map(lambda x: states.filterMetadata('GID_0','equals',
-                                                                                   ee.String(x)))).flatten()
+
 # #Use function to calculate temperature anomalies and export
 calculate_average_temperature_per_feature(states,
                                           output_name='Average_Temperature_State_Level',
@@ -224,11 +221,10 @@ global_geometry = land.geometry().bounds()
 
 # calculate average temperature over all valid pixels
 global_temperature = GHCN_CAMS_annual_img.reduceRegion(reducer=ee.Reducer.mean(), 
-                                                     geometry=global_geometry, 
-                                                     crs=crs, crsTransform=crsTransform, 
+                                                     geometry=global_geometry, crs=crs, crsTransform=crsTransform, 
                                                      bestEffort=True, maxPixels=1e13)
 # remove geometry
-global_temperature_feature = ee.Feature(None,global_temperature)
+global_temperature_feature = ee.Feature(None, global_temperature)
 global_temperature_feature_collection = ee.FeatureCollection(global_temperature_feature)
 
 #Export to Google Drive
