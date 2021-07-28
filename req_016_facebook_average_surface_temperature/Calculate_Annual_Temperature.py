@@ -13,9 +13,6 @@ import urllib
 import ee
 from google.cloud import storage
 import logging
-import gzip
-import shutil
-import rasterio
 import subprocess
 
 
@@ -35,7 +32,7 @@ dataset_name = 'req_016_facebook_average_surface_temperature' #check
 
 logger.info('Executing script for dataset: ' + dataset_name)
 # first, set the directory that you are working in with the path variable
-path = os.path.abspath(os.path.join(os.getenv('BLOG_DIR'),dataset_name))
+path = os.path.abspath(os.path.join(os.getenv('BLOG_DIR'), dataset_name))
 # move to this directory
 os.chdir(path)
 # create a new sub-directory within your specified dir called 'data'
@@ -60,22 +57,22 @@ processed_data_file_convention = 'annual_{}.nc'
 urllib.request.urlretrieve(url, raw_data_file)
 
 # Define command to shift longitude range
-cmd = ('cdo sellonlatbox,-180,180,-90,90 {} {}'.format(raw_data_file,centered_data_file))
+cmd = ('cdo sellonlatbox,-180,180,-90,90 {} {}'.format(raw_data_file, centered_data_file))
 # Run command
 subprocess.check_output(cmd,shell=True)
 
 # Define command to calculate annual temperatures from monthly temperatures
-cmd = ('cdo yearmean {} {}'.format(centered_data_file,annual_data_file))
+cmd = ('cdo yearmean {} {}'.format(centered_data_file, annual_data_file))
 # Run command
-subprocess.check_output(cmd,shell=True)
+subprocess.check_output(cmd, shell=True)
 
-#Define years to separate netcdf for
+# Define years to separate netcdf for
 years = np.arange(1950,2021)
 
-#Loop through years
+# Loop through years
 for year in years:
     #define command to separate netcdf by one year
-    cmd = ('cdo -selyear,{} {} {}'.format(year,annual_data_file,processed_data_file_convention.format(year)))
+    cmd = ('cdo -selyear,{} {} {}'.format(year, annual_data_file, processed_data_file_convention.format(year)))
     subprocess.check_output(cmd,shell=True)
 
 # convert the netcdf files to tif files
@@ -135,7 +132,6 @@ for uri in gcs_uris:
 util_cloud.gcs_remove(gcs_uris, gcs_bucket=gcsBucket)
 logger.info('Files deleted from Google Cloud Storage.')
 
-
 '''
 Data processing on Google Earth Engine
 '''
@@ -165,7 +161,6 @@ GHCN_CAMS_annual_img = GHCN_CAMS_annual.toBands()
 GHCN_CAMS_annual_img = GHCN_CAMS_annual_img.rename(band_names)
 GHCN_CAMS_annual_img = GHCN_CAMS_annual_img.add(ee.Image.constant(-273.15))
 
-
 # load country and state shapefiles
 countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
 states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
@@ -181,12 +176,12 @@ def calculate_average_temperature_per_feature(feature_collection, output_name, o
         feature = feature.set(feature_average_annual_temperature)
         return feature
     average_annual_temperature = feature_collection.map(calculate_average_temperature)
-    #Drop geometry information
+    # Drop geometry information
     average_annual_temperature = average_annual_temperature.map(lambda x: x.select(x.propertyNames(),
                                                                            retainGeometry=False))
     average_annual_temperature = ee.FeatureCollection(average_annual_temperature).sort('GID_0')
 
-    #Export to Google Drive
+    # Export to Google Drive
     export_results_task = ee.batch.Export.table.toDrive(
         collection = average_annual_temperature, 
         description = output_name, 
@@ -195,24 +190,21 @@ def calculate_average_temperature_per_feature(feature_collection, output_name, o
 
     export_results_task.start()
 
-
-
-#Load country data, filter to desired ISO Codes
+# Load country data, filter to desired ISO Codes
 countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
 
-# #Use function to calculate temperature anomalies and export
+# Use function to calculate temperature anomalies and export
 calculate_average_temperature_per_feature(countries,
-                                          output_name='Average_Temperature_Country_Level',
-                                          output_folder='Facebook')
+                                          output_name = 'Average_Temperature_Country_Level',
+                                          output_folder = 'Facebook')
 
-
-#Load state data, filter to desired ISO Codes
+# Load state data, filter to desired ISO Codes
 states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
 
-# #Use function to calculate temperature anomalies and export
+# Use function to calculate temperature anomalies and export
 calculate_average_temperature_per_feature(states,
-                                          output_name='Average_Temperature_State_Level',
-                                          output_folder='Facebook')
+                                          output_name = 'Average_Temperature_State_Level',
+                                          output_folder = 'Facebook')
                                           
 # define global bounds for calculating global temperature                                         
 land = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
@@ -220,14 +212,14 @@ land = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
 global_geometry = land.geometry().bounds()
 
 # calculate average temperature over all valid pixels
-global_temperature = GHCN_CAMS_annual_img.reduceRegion(reducer=ee.Reducer.mean(), 
-                                                     geometry=global_geometry, crs=crs, crsTransform=crsTransform, 
-                                                     bestEffort=True, maxPixels=1e13)
+global_temperature = GHCN_CAMS_annual_img.reduceRegion(reducer = ee.Reducer.mean(), 
+                                                     geometry = global_geometry, crs = crs, crsTransform = crsTransform, 
+                                                     bestEffort = True, maxPixels = 1e13)
 # remove geometry
 global_temperature_feature = ee.Feature(None, global_temperature)
 global_temperature_feature_collection = ee.FeatureCollection(global_temperature_feature)
 
-#Export to Google Drive
+# Export to Google Drive
 output_name='Average_Temperature_Global_Level'
 output_folder='Facebook'
 
