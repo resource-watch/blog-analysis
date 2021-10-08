@@ -112,9 +112,8 @@ for i in range(1990, 2019):
 # remove index column
 df_edit = df_edit.iloc[:, 1:]
 
-# move iso_a3 to the first column
-cols = list(df_edit.columns)
-cols = [cols[-1]] + cols[:-1]
+# move iso_a3 to the first column and reverse years
+cols = ['iso_a3', 'country', 'data_source', 'sector', 'gas', 'unit'] + [str(year) for year in range(1990, 2019)]
 df_edit = df_edit[cols]
 
 # save processed dataset to csv
