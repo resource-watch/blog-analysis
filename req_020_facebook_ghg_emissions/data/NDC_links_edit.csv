@@ -1,4 +1,4 @@
-iso,country,ndc_overview,ndc_full
+iso_a3,country,ndc_overview,ndc_full
 AFG,Afghanistan,https://climatewatchdata.org/ndcs/country/AFG,https://climatewatchdata.org/ndcs/country/AFG/full
 ALB,Albania,https://climatewatchdata.org/ndcs/country/ALB,https://climatewatchdata.org/ndcs/country/ALB/full
 AND,Andorra,https://climatewatchdata.org/ndcs/country/AND,https://climatewatchdata.org/ndcs/country/AND/full

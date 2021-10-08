@@ -166,6 +166,9 @@ df_edit = df_edit[df_edit.Country != 'Russian Federation']
 df_edit['NDC_Overview'] = [f'https://climatewatchdata.org/ndcs/country/{ISO_Code}' for ISO_Code in df_edit['ISO']]
 df_edit['NDC_Full'] = [f'https://climatewatchdata.org/ndcs/country/{ISO_Code}/full' for ISO_Code in df_edit['ISO']]
 
+# rename column
+df_edit = df_edit.rename(columns={"ISO": "iso_a3"})
+
 # convert the column names to lowercase
 df_edit.columns = [x.lower() for x in df_edit.columns]
 
@@ -264,6 +267,14 @@ df_edit.loc[df_edit['Region'] == 'United States','iso_a3']='USA'
 # update labels and sort data
 df_edit = df_edit.replace('Emissions|GHG Emissions by gas with LULUCF|N2O','Emissions|GHG Emissions by gas with LULUCF|All GHG')
 df_edit = df_edit.sort_values(by = ['Region', 'Scenario']).reset_index()
+
+# replace spaces and special characters in column headers with '_" 
+df_edit.columns = df_edit.columns.str.replace(' ', '_')
+df_edit.columns = df_edit.columns.str.replace('/', '_')
+df_edit.columns = df_edit.columns.str.replace('-', '_')
+
+# convert the column names to lowercase
+df_edit.columns = [x.lower() for x in df_edit.columns]
 
 # remove index column
 df_edit = df_edit.iloc[: , 1:]
