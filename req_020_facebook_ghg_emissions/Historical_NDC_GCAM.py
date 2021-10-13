@@ -151,7 +151,7 @@ filename = os.path.join(raw_data_file_unzipped,'NDC_quantification', 'CW_NDC_qua
 df = pd.read_excel(filename)
 
 # drop rows with NAs
-df.dropna(inplace=True)
+df.dropna(inplace = True)
 
 # get unique country list
 df_edit = df.loc[:,['ISO','Country']]
@@ -164,6 +164,8 @@ df_edit = df_edit[df_edit.Country != 'Russian Federation']
 # add links
 df_edit['NDC_Overview'] = [f'https://climatewatchdata.org/ndcs/country/{ISO_Code}' for ISO_Code in df_edit['ISO']]
 df_edit['NDC_Full'] = [f'https://climatewatchdata.org/ndcs/country/{ISO_Code}/full' for ISO_Code in df_edit['ISO']]
+df_edit['Embed_URL'] = [f'https://climatewatchdata.org/embed/countries/{ISO_Code}/ghg-emissions' for ISO_Code in df_edit['ISO']]
+df_edit['Embed_Code'] = [f'<iframe src="https://climatewatchdata.org/embed/countries/{ISO_Code}/ghg-emissions" frameborder="0" style="height: 600px; width: 1230px"></iframe>' for ISO_Code in df_edit['ISO']]
 
 # rename column
 df_edit = df_edit.rename(columns={"ISO": "iso_a3"})
@@ -182,28 +184,26 @@ df_edit.to_csv(processed_data_file, index = False)
 # country_iso_list = ["USA","GBR","FRA","DEU","CAN", "SWE", "BRA", "MEX", "BEL", "IRL", "NLD", "NGA", "SAU", "ZAF", "ESP", "IND", "IDN", "TWN"]
 # df = df[df.ISO.isin(country_iso_list)]
 
-# df = df.reset_index()
 
-# # convert the column names to lowercase
-# df.columns = [x.lower() for x in df.columns]
+# clean NDCs
+# deal with exceptions
+df.loc[df.Country == 'Russian Federation', 'Country'] = 'Russia'
 
-# # replace all NaN with None
-# df = df.where((pd.notnull(df)), None)
+# convert the column names to lowercase
+df.columns = [x.lower() for x in df.columns]
 
-# # convert the data type of the column 'year' to integer
-# df['year'] = df['year'].astype('int64')
+# replace all NaN with None
+df = df.where((pd.notnull(df)), None)
 
-# # convert the years in the 'year' column to datetime objects and store them in a new column 'datetime'
-# df['datetime'] = [datetime.datetime(x, 1, 1) for x in df.year]
+# convert the data type of the column 'year' to integer
+df['year'] = df['year'].astype('int64')
 
-# # convert the data type of the numeric columns to float
-# df['value'] = df['value'].astype('float64')
+# convert the data type of the numeric columns to float
+df['value'] = df['value'].astype('float64')
 
-# df = df.iloc[: , 1:]
-
-# # save processed dataset to csv
-# processed_data_file = os.path.join(data_dir, 'NDC_quantification_edit.csv')
-# df.to_csv(processed_data_file, index = False)
+# save processed dataset to csv
+processed_data_file = os.path.join(data_dir, 'NDC_quantification_edit.csv')
+df.to_csv(processed_data_file, index = False)
 
 
 ######## Pathway - GCAM ########
