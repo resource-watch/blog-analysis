@@ -16,7 +16,7 @@ The final data can be viewed in the directory [data](https://github.com/resource
     - Cook Islands and Niue don't have data for 'Industrial Processes'.
 2. [NDC Links](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/NDC_links_edit.csv)
     - Links to the country's NDC overview page, full NDC page, embed URL, and embed code.
-    - The embed URL for countries that have historical emissions data but don't have NDCs can be got from: https\://climatewatchdata.org/embed/countries/\{*country ISO code*\}/ghg-emissions
+    - The embed URL for countries that have historical emissions data but don't have NDCs can be got from: https<nolink>://climatewatchdata.org/embed/countries/\{*country ISO code*\}/ghg-emissions
 3. [NDCs Data](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/NDC_quantification_edit.csv)
     - The Paris Agreement requests each country to outline and communicate their post-2020 climate actions, known as their NDCs.
     - This dataset has NDCs for 161 countries.
