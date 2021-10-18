@@ -43,7 +43,7 @@ A csv file was downloaded from the explorer
 after selecting the following options from menu:
     Data source: CAIT
     Countries and regions: All selected
-    Sectors: Total including LUCF
+    Sectors: All selected
     Gases: All GHG
     Start year: 1990
     End year: 2018
@@ -115,6 +115,12 @@ df_edit = df_edit.iloc[:, 1:]
 # move iso_a3 to the first column and reverse years
 cols = ['iso_a3', 'country', 'data_source', 'sector', 'gas', 'unit'] + [str(year) for year in range(1990, 2019)]
 df_edit = df_edit[cols]
+
+# subset table by sectors
+df_edit = df_edit.loc[df_edit['sector'].isin(['Agriculture', 'Energy', 'Industrial Processes', 'Land-Use Change and Forestry', 'Total excluding LUCF', 'Total including LUCF', 'Waste'])]
+df_edit = df_edit.sort_values(["country", "sector"], ascending = (True, True))
+
+# grouped_df = df_edit.groupby("country").nunique()
 
 # save processed dataset to csv
 processed_data_file = os.path.join(data_dir, 'historical_emissions_edit.csv')
