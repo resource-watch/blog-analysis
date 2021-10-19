@@ -14,7 +14,7 @@ The final data can be viewed in the directory [data](https://github.com/resource
     - *Agriculture* + *Energy* + *Industrial Processes* + *Waste* = *Total excluding LUCF*
     - *Total excluding LUCF* + *Land-Use Change and Forestry* = *Total including LUCF*
     - Cook Islands and Niue don't have data for 'Industrial Processes'.
-2. [Historical GHG Emissions Data - Energy]((https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/historical_emissions_energy_edit.csv)
+2. [Historical GHG Emissions Data - Energy](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/historical_emissions_energy_edit.csv)
     - *Electricity/Heat* + *Transportation* + *Manufacturing/Construction* + *Fugitive Emissions* + *Building* + *Other Fuel Combustion* = *Energy* (in [Historical GHG Emissions Data](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/historical_emissions_edit.csv))
     - Andorra (1/6), Liechtenstein (2/6), Rwanda (2/6), Marshall Islands (5/6), Micronesia (5/6), Palau (5/6), and Tuvalu (5/6) don't have data for all 6 subsectors.
 3. [NDC Links](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/NDC_links_edit.csv)
