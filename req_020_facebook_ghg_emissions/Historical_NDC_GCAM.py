@@ -116,13 +116,20 @@ df_edit = df_edit.iloc[:, 1:]
 cols = ['iso_a3', 'country', 'data_source', 'sector', 'gas', 'unit'] + [str(year) for year in range(1990, 2019)]
 df_edit = df_edit[cols]
 
+# subset energy sector
+df_ene = df_edit.loc[df_edit['sector'].isin(['Electricity/Heat', 'Transportation', 'Manufacturing/Construction','Fugitive Emissions', 'Building', 'Other Fuel Combustion'])]
+df_ene = df_ene.sort_values(["country", "sector"], ascending = (True, True))
+
 # subset table by sectors
 df_edit = df_edit.loc[df_edit['sector'].isin(['Agriculture', 'Energy', 'Industrial Processes', 'Land-Use Change and Forestry', 'Total excluding LUCF', 'Total including LUCF', 'Waste'])]
 df_edit = df_edit.sort_values(["country", "sector"], ascending = (True, True))
 
-# grouped_df = df_edit.groupby("country").nunique()
+# grouped_df = df_ene.groupby("country").nunique()
 
 # save processed dataset to csv
+processed_data_file = os.path.join(data_dir, 'historical_emissions_energy_edit.csv')
+df_ene.to_csv(processed_data_file, index = False)
+
 processed_data_file = os.path.join(data_dir, 'historical_emissions_edit.csv')
 df_edit.to_csv(processed_data_file, index = False)
 
