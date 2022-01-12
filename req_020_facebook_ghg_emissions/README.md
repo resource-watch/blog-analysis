@@ -6,7 +6,7 @@ Check out the Climate Science Center (CSC) for up-to-date information on climate
 ### Data Sources
 This analysis was done using the data on [Climate Watch](https://www.climatewatchdata.org) dataset, which provides historical GHG emissions data from 1990 to 2018 for 193 countries and 2 regions (World and European Union), and NDCs for 161 countries.
 
-### Data
+### Final Data
 The final data can be viewed in the directory [data](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/).
 1. [Historical GHG Emissions Data](https://github.com/resource-watch/blog-analysis/blob/master/req_020_facebook_ghg_emissions/data/historical_emissions_edit.csv)
     - Historical GHG emissions data from 1990 to 2018 for 193 countries and 2 regions (World and European Union). 
