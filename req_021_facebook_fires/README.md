@@ -29,6 +29,8 @@ The second objective of this analysis is to calculate the total burned area for 
 The final data can be viewed in the directory [data](https://github.com/resource-watch/blog-analysis/blob/master/req_021_facebook_fires/data/).
 1. [yearly_USA_2020](https://github.com/resource-watch/blog-analysis/blob/master/req_021_facebook_fires/data/yearly_USA_2020.csv)
     - State level burned area data from 2002 to 2020.
+2. [continent_2019](https://github.com/resource-watch/blog-analysis/blob/master/req_021_facebook_fires/data/continent_2019.csv)
+    - Continent level and global burned area data for 2019 by LULC.
 
 ### References
 - Boschetti, L., Sparks, A., Roy, D.P., Giglio, L., San-Miguel-Ayanz, J., GWIS national and sub-national fire activity data from the NASA MODIS Collection 6 Burned Area Product in support of policy making, carbon inventories and natural resource management, developed under NASA Applied Sciences grant #80NSSC18K0400, Using the NASA Polar Orbiting Fire Product Record to Enhance and Expand the Global Wildfire Information System (GWIS).
