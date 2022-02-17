@@ -1,3 +1,4 @@
+from enum import unique
 import logging
 import pandas as pd
 import glob
@@ -299,3 +300,68 @@ df_edit = df_edit[cols]
 # save processed dataset to csv
 processed_data_file = os.path.join(data_dir, 'GCAM_edit.csv')
 df_edit.to_csv(processed_data_file, index = False)
+
+
+######## Pathway - CAT ########
+'''
+Download data and save to your data directory
+Data can be downloaded at the following link:
+https://climateactiontracker.org/countries/
+A excel file was downloaded for each country from Climate Action Tracker
+'''
+# download the data from the source
+logger.info('Downloading raw data')
+ExcelFilenames = glob.glob(os.path.join(os.path.expanduser("~"), 'Downloads', 'CAT_AssessmentData*.xls'))
+ExcelFilenames = ExcelFilenames + glob.glob(os.path.join(os.path.expanduser("~"), 'Downloads', 'CAT_AssessmentData*.xlsx'))
+
+raw_data_files = []
+# move this file into your data directory
+for file in ExcelFilenames:
+    raw_data_file = os.path.join(data_dir, os.path.basename(file))
+    shutil.move(file, raw_data_file)
+    raw_data_files.append(raw_data_file)
+
+file = raw_data_files[0]
+modelled_pathways = pd.DataFrame()
+country = []
+link = []
+iso_a3 = []
+for file in raw_data_files:
+    data = pd.read_excel(file, sheet_name = 'ModelledPathways')
+    country.append(data.iloc[-8, 3])
+    link.append('https://climateactiontracker.org/countries/'+ data.iloc[-8, 3].lower().replace(' ','-') + '/')
+    data = data.iloc[-4:,1:]
+    data.columns = ['code', 'upper_end_of'] + list(range(2015, 2051))
+    data['iso_a3'] = file.split('_')[2]
+    iso_a3.append(file.split('_')[2])
+    modelled_pathways = modelled_pathways.append(data)
+
+modelled_pathways = modelled_pathways.reset_index(drop = True)
+modelled_pathways.loc[modelled_pathways.upper_end_of == '1.5°C Paris Agreement compatible', 'code'] = 'Below 1.5C and low overshoot'
+modelled_pathways.loc[modelled_pathways.upper_end_of == 'Almost sufficient', 'code'] = '2.0C'
+modelled_pathways.loc[modelled_pathways.upper_end_of == 'Insufficient', 'code'] = '3.0C'
+modelled_pathways.loc[modelled_pathways.upper_end_of == 'Highly insufficient', 'code'] = '4.0C'
+
+# move iso_a3 to the first column
+cols = list(modelled_pathways.columns)
+cols = [cols[-1]] + cols[:-1]
+modelled_pathways = modelled_pathways[cols]
+
+# save processed dataset to csv
+processed_data_file = os.path.join(data_dir, 'modelled_pathways_edit.csv')
+modelled_pathways.to_csv(processed_data_file, index = False)
+
+# create CAT links list
+modelled_pathways_link = pd.DataFrame(list(zip(iso_a3, country, link)), columns = ['iso_a3', 'country', 'link'])
+# fix problematic links
+modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'KOR','link'] = 'https://climateactiontracker.org/countries/south-korea/'
+modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'ARE','link'] = 'https://climateactiontracker.org/countries/uae/'
+modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'BBR','link'] = 'https://climateactiontracker.org/countries/uk/'
+modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'EU27','link'] = 'https://climateactiontracker.org/countries/eu/'
+modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'RUS','link'] = 'https://climateactiontracker.org/countries/russian-federation/'
+# sort by iso_a3
+modelled_pathways_link = modelled_pathways_link.sort_values('iso_a3')
+
+# save processed dataset to csv
+processed_data_file = os.path.join(data_dir, 'modelled_pathways_link.csv')
+modelled_pathways_link.to_csv(processed_data_file, index = False)
