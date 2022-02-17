@@ -79,8 +79,8 @@ df_yearly.drop("month", axis = 1, inplace = True)
 df_yearly.to_csv("data/yearly_USA.csv")
 
 # aggregate by country
-# df_yearly_country = df.groupby(['year','gid_0', 'country']).sum().reset_index()
-# df_yearly_country.to_csv("data/yearly_7_country.csv")
+df_yearly_country = df.groupby(['year','gid_0', 'country']).sum().reset_index()
+df_yearly_country.to_csv("data/yearly_7_country.csv")
 
 # subset 2019 data
 df_2019 = df_yearly[df_yearly.year == 2019]
@@ -88,14 +88,11 @@ df_2019 = df_yearly[df_yearly.year == 2019]
 # add geometry to the dataframe
 df_2019_USA = pd.merge(df_2019, state_shp_USA[['GID_1','geometry']], left_on = 'gid_1',right_on = 'GID_1', how = 'left')
 df_2019_USA.drop("GID_1", axis = 1, inplace = True)
-
 # convert dataframe to geodataframe
 gdf_2019_USA = gpd.GeoDataFrame(df_2019_USA, geometry = df_2019_USA.geometry)
 gdf_2019_USA = gdf_2019_USA.set_crs(epsg = 4326)
-
 # save to shapefile
 gdf_2019_USA.to_file("data/USA_2019.shp")
-
 # plot map
 ax = gdf_2019_USA.plot(column = 'total_ba_hectares', cmap = 'YlOrRd', edgecolor = 'grey', legend = True)
 
@@ -129,3 +126,26 @@ USA_2020 = USA_2020[list(df_yearly.columns)]
 
 df_yearly = df_yearly.append(USA_2020).reset_index(drop = True)
 df_yearly.to_csv("data/yearly_USA_2020.csv")
+
+# aggregate by continent
+countries_by_continent = pd.read_csv('data/countries_by_continent.csv')
+df_2019_continent = pd.merge(df_2019, countries_by_continent[['ISO-alpha3 Code','Continent']], left_on = 'gid_0',right_on = 'ISO-alpha3 Code', how = 'left')
+# fill in for regions not in the list
+df_2019_continent.loc[df_2019_continent.country == 'Taiwan', 'Continent'] = 'Asia'
+df_2019_continent.loc[df_2019_continent.country == 'Akrotiri and Dhekelia', 'Continent'] = 'Europe'
+df_2019_continent.loc[df_2019_continent.country == 'Kosovo', 'Continent'] = 'Europe'
+df_2019_continent.loc[df_2019_continent.country == 'Northern Cyprus', 'Continent'] = 'Asia'
+# calculate global burned area
+df_2019_continent_agg = df_2019_continent.groupby(['year','Continent']).sum().reset_index()
+df_2019_continent_agg.loc['6']= df_2019_continent_agg.sum()
+df_2019_continent_agg.loc['6','year'] = 2019
+df_2019_continent_agg.loc['6','Continent'] = 'Global'
+# calculate percentage
+df_2019_continent_agg['cropland_percent'] = round(df_2019_continent_agg['cropland_ba_hectares']/df_2019_continent_agg['total_ba_hectares'], 4)
+df_2019_continent_agg['forest_percent'] = round(df_2019_continent_agg['forest_ba_hectares']/df_2019_continent_agg['total_ba_hectares'], 4)
+df_2019_continent_agg['grass_and_shrubland_percent'] = round(df_2019_continent_agg['grass_and_shrubland_ba_hectares']/df_2019_continent_agg['total_ba_hectares'], 4)
+df_2019_continent_agg['wetlands_percent'] = round(df_2019_continent_agg['wetlands_ba_hectares']/df_2019_continent_agg['total_ba_hectares'], 4)
+df_2019_continent_agg['settlement_percent'] = round(df_2019_continent_agg['settlement_ba_hectares']/df_2019_continent_agg['total_ba_hectares'], 4)
+df_2019_continent_agg['other_percent'] = round(df_2019_continent_agg['other_ba_hectares']/df_2019_continent_agg['total_ba_hectares'], 4)
+# export as csv
+df_2019_continent_agg.to_csv("data/continent_2019.csv")
