@@ -10,14 +10,17 @@ if utils_path not in sys.path:
 import util_files
 import util_cloud
 import urllib
-import ee
-from google.cloud import storage
 import logging
 import gzip
 import shutil
 import rasterio
 import subprocess
-
+import geopandas as gpd
+import pandas as pd
+from rasterstats import zonal_stats
+import rasterio
+import fiona
+#import glob
 
 # set up logging
 # get the top-level logger object
@@ -84,157 +87,31 @@ for raw_file in processed_data_files:
     util_files.convert_netcdf(raw_file, ['air'])
 processed_data_annual = [os.path.join(raw_file[:-3]+'_air.tif') for raw_file in processed_data_files]
 
-'''
-Upload processed data to Google Earth Engine
-'''
-logger.info('Uploading processed data to Google Cloud Storage.')
-# set up Google Cloud Storage project and bucket objects
-print(os.environ.get("CLOUDSDK_CORE_PROJECT"))
-gcsClient = storage.Client(os.environ.get("CLOUDSDK_CORE_PROJECT"))
-gcsBucket = gcsClient.bucket(os.environ.get("GEE_STAGING_BUCKET"))
+#Function for calculating the average temperature per year
+def calculate_average_temperature_per_year(years, regionsFile, output_file,kelvinToCelsius=-273.15):
+    #read in regions
+    regions = gpd.read_file(regionsFile)
+    #loop through years
+    for year in years:
+        #find raster for that year
+        pathToRaster = [x for x in processed_data_annual if str(year) in x][0]
+        #calculate average per region within regions geodataframe
+        meanDF = pd.DataFrame(zonal_stats(regions, pathToRaster,stats=['mean']))
+        #Convert kelvin to celsius
+        meanDF.mean = meanDF.mean+kelvinToCelsius
+        #rename column to year
+        meanDF.columns = str(year)
+        #concat to regions file
+        regions = pd.concat([regions, meanDF], axis=1) 
+    #save file
+    regions.to_csv(output_file,index=False)
 
-# upload files to Google Cloud Storage
-gcs_uris= util_cloud.gcs_upload(processed_data_annual, dataset_name, gcs_bucket=gcsBucket)
+#Define shapefiles for global, country, and state level geometries
+globalFile = os.path.join(os.getenv('GADM_DIR'),'global.shp')
+countriesFile = os.path.join(os.getenv('GADM_DIR'),'gadm36_0.shp')
+statesFile = os.path.join(os.getenv('GADM_DIR'),'gadm36_1.shp')
 
-logger.info('Uploading processed data to Google Earth Engine.')
-# initialize ee and eeUtil modules for uploading to Google Earth Engine
-auth = ee.ServiceAccountCredentials(os.getenv('GEE_SERVICE_ACCOUNT'), os.getenv('GOOGLE_APPLICATION_CREDENTIALS'))
-ee.Initialize(auth)
-
-# set pyramiding policy for GEE upload
-pyramiding_policy = 'MEAN' #check
-
-# create an image collection where we will put the processed data files in GEE
-image_collection = f'projects/resource-watch-gee/Facebook/TemperatureAnalysis/GHCN_CAMS_annual'
-ee.data.createAsset({'type': 'ImageCollection'}, image_collection)
-
-# set image collection's privacy to public
-acl = {"all_users_can_read": True}
-ee.data.setAssetAcl(image_collection, acl)
-print('Privacy set to public.')
-
-# list the bands in each image
-band_ids = ['b1']
-
-task_id = []
-# upload processed data files to GEE
-for uri in gcs_uris:
-    # generate an asset name for the current file by using the filename (minus the file type extension)
-    asset_name = f'projects/resource-watch-gee/Facebook/TemperatureAnalysis/GHCN_CAMS_annual/{os.path.basename(uri)[:-4]}'
-    # create the band manifest for this asset
-    mf_bands = [{'id': band_id, 'tileset_band_index': band_ids.index(band_id), 'tileset_id': os.path.basename(uri)[:-4],
-             'pyramidingPolicy': pyramiding_policy} for band_id in band_ids]
-    # create complete manifest for asset upload
-    manifest = util_cloud.gee_manifest_complete(asset_name, uri, mf_bands)
-    # upload the file from GCS to GEE
-    task = util_cloud.gee_ingest(manifest)
-    print(asset_name + ' uploaded to GEE')
-    task_id.append(task)
-
-# remove files from Google Cloud Storage
-util_cloud.gcs_remove(gcs_uris, gcs_bucket=gcsBucket)
-logger.info('Files deleted from Google Cloud Storage.')
-
-
-'''
-Data processing on Google Earth Engine
-'''
-# Initialize earth engine
-try:
-    ee.Initialize()
-except Exception as e:
-    ee.Authenticate()
-    ee.Initialize()
-
-# load image collection
-GHCN_CAMS_annual = ee.ImageCollection("projects/resource-watch-gee/Facebook/TemperatureAnalysis/GHCN_CAMS_annual")
-
-# save projection (crs, crsTransform, scale)
-projection = GHCN_CAMS_annual.first().projection().getInfo()
-projection_gee = GHCN_CAMS_annual.first().projection()
-crs = projection.get('crs')
-crsTransform = projection.get('transform')
-scale = GHCN_CAMS_annual.first().projection().nominalScale().getInfo()
-print('crs: ', crs)
-print('crsTransform: ', crsTransform)
-print('scale: ', scale)
-
-# convert ImageCollection to Image
-band_names = ee.List([str(i) for i in np.arange(1950,2021)])
-GHCN_CAMS_annual_img = GHCN_CAMS_annual.toBands()
-GHCN_CAMS_annual_img = GHCN_CAMS_annual_img.rename(band_names)
-GHCN_CAMS_annual_img = GHCN_CAMS_annual_img.add(ee.Image.constant(-273.15))
-
-
-# load country and state shapefiles
-countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
-states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
-
-# Define function for calculating average temperature over feature collection
-def calculate_average_temperature_per_feature(feature_collection, output_name, output_folder):
-    #Calculate average temperature anomaly for each year for each country
-    def calculate_average_temperature(feature):
-        feature = ee.Feature(feature)
-        feature_average_annual_temperature = GHCN_CAMS_annual_img.reduceRegion(ee.Reducer.mean(), feature.geometry(), crs=crs, 
-                                                                                crsTransform=crsTransform, tileScale=2, 
-                                                                                bestEffort=True, maxPixels=1e13)
-        feature = feature.set(feature_average_annual_temperature)
-        return feature
-    average_annual_temperature = feature_collection.map(calculate_average_temperature)
-    #Drop geometry information
-    average_annual_temperature = average_annual_temperature.map(lambda x: x.select(x.propertyNames(),
-                                                                           retainGeometry=False))
-    average_annual_temperature = ee.FeatureCollection(average_annual_temperature).sort('GID_0')
-
-    #Export to Google Drive
-    export_results_task = ee.batch.Export.table.toDrive(
-        collection = average_annual_temperature, 
-        description = output_name, 
-        fileNamePrefix = output_name,
-        folder = output_folder)
-
-    export_results_task.start()
-
-
-
-#Load country data, filter to desired ISO Codes
-countries = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
-
-# #Use function to calculate temperature anomalies and export
-calculate_average_temperature_per_feature(countries,
-                                          output_name='Average_Temperature_Country_Level',
-                                          output_folder='Facebook')
-
-
-#Load state data, filter to desired ISO Codes
-states = ee.FeatureCollection("projects/resource-watch-gee/gadm36_1_simplified")
-
-# #Use function to calculate temperature anomalies and export
-calculate_average_temperature_per_feature(states,
-                                          output_name='Average_Temperature_State_Level',
-                                          output_folder='Facebook')
-                                          
-# define global bounds for calculating global temperature                                         
-land = ee.FeatureCollection("projects/resource-watch-gee/gadm36_0_simplified")
-# use bounds because the land mask has too many vertices for Earth Engine, but the data is masked anyway
-global_geometry = land.geometry().bounds()
-
-# calculate average temperature over all valid pixels
-global_temperature = GHCN_CAMS_annual_img.reduceRegion(reducer=ee.Reducer.mean(), 
-                                                     geometry=global_geometry, crs=crs, crsTransform=crsTransform, 
-                                                     bestEffort=True, maxPixels=1e13)
-# remove geometry
-global_temperature_feature = ee.Feature(None, global_temperature)
-global_temperature_feature_collection = ee.FeatureCollection(global_temperature_feature)
-
-#Export to Google Drive
-output_name='Average_Temperature_Global_Level'
-output_folder='Facebook'
-
-export_results_task = ee.batch.Export.table.toDrive(
-    collection = global_temperature_feature_collection, 
-    description = output_name, 
-    fileNamePrefix = output_name,
-    folder = output_folder)
-
-export_results_task.start()
+#Use function to calculate temperature anomalies and export
+calculate_average_temperature_per_year(years, globalFile, 'Average_Temperature_Global_Level.csv', output_folder,kelvinToCelsius=-273.15)
+calculate_average_temperature_per_year(years, countriesFile, 'Average_Temperature_Country_Level.csv', output_folder,kelvinToCelsius=-273.15)
+calculate_average_temperature_per_year(years, statesFile, 'Average_Temperature_State_Level.csv', output_folder,kelvinToCelsius=-273.15)
