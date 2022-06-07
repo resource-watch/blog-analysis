@@ -49,7 +49,6 @@ after selecting the following options from menu:
     Start year: 1990
     End year: 2018
 '''
-
 # download the data from the source
 logger.info('Downloading raw data')
 download = glob.glob(os.path.join(os.path.expanduser("~"), 'Downloads', 'historical_emissions.zip'))[0]
@@ -198,7 +197,6 @@ df_edit.to_csv(processed_data_file, index = False)
 # country_iso_list = ["USA","GBR","FRA","DEU","CAN", "SWE", "BRA", "MEX", "BEL", "IRL", "NLD", "NGA", "SAU", "ZAF", "ESP", "IND", "IDN", "TWN"]
 # df = df[df.ISO.isin(country_iso_list)]
 
-
 # clean NDCs
 # deal with exceptions
 df.loc[df.Country == 'Russian Federation', 'Country'] = 'Russia'
@@ -219,90 +217,7 @@ df['value'] = df['value'].astype('float64')
 processed_data_file = os.path.join(data_dir, 'NDC_quantification_edit.csv')
 df.to_csv(processed_data_file, index = False)
 
-
-######## Pathway - GCAM ########
-'''
-Download data and save to your data directory
-Data can be downloaded at the following link:
-https://www.climatewatchdata.org/data-explorer
-A csv file was downloaded from the explorer
-go to Download Bulk Data -> PATHWAYS
-'''
-# download the data from the source
-logger.info('Downloading raw data')
-download = glob.glob(os.path.join(os.path.expanduser("~"), 'Downloads', 'pathways.zip'))[0]
-
-# move this file into your data directory
-raw_data_file = os.path.join(data_dir, os.path.basename(download))
-shutil.move(download, raw_data_file)
-
-# unzip historical emissions data
-raw_data_file_unzipped = raw_data_file.split('.')[0]
-zip_ref = ZipFile(raw_data_file, 'r')
-zip_ref.extractall(raw_data_file_unzipped)
-zip_ref.close()
-
-'''
-Process data
-'''
-# read in historical emissions csv data to pandas dataframe
-filename = os.path.join(raw_data_file_unzipped,'Pathways', 'GCAM.xlsx')
-# filename = 'data/pathways/Pathways/GCAM.xlsx'
-df = pd.read_excel(filename, sheet_name='GCAM_Timeseries data')
-
-# subset dataset to GHG Emissions
-df = df[df['ESP Indicator Name'].str.contains('GHG Emissions by gas with LULUCF')]
-df_edit= df.drop_duplicates(subset = ['Scenario', 'Region'],keep = 'last').reset_index(drop = True)
-
-# sum four gases of each (scenario, region, year)
-years = ['2005', '2010', '2020', '2030', '2040', '2050', '2060', '2070', '2080','2090', '2100']
-for i in range(len(df_edit)):
-    for year in years:
-        df_edit[year].iloc[i] = df.loc[(df['Scenario'] == df_edit.Scenario[i]) & (df['Region'] == df_edit.Region[i]), year].sum()
-
-# add iso_a3 to countries
-df_edit.loc[df_edit['Region'] == 'Argentina','iso_a3']='ARG'
-df_edit.loc[df_edit['Region'] == 'Brazil','iso_a3']='BRA'
-df_edit.loc[df_edit['Region'] == 'Canada','iso_a3']='CAN'
-df_edit.loc[df_edit['Region'] == 'China','iso_a3']='CHN'
-df_edit.loc[df_edit['Region'] == 'Colombia','iso_a3']='COL'
-df_edit.loc[df_edit['Region'] == 'India','iso_a3']='IND'
-df_edit.loc[df_edit['Region'] == 'Indonesia','iso_a3']='IDN'
-df_edit.loc[df_edit['Region'] == 'Japan','iso_a3']='JPN'
-df_edit.loc[df_edit['Region'] == 'Mexico','iso_a3']='MEX'
-df_edit.loc[df_edit['Region'] == 'Pakistan','iso_a3']='PAK'
-df_edit.loc[df_edit['Region'] == 'Russia','iso_a3']='RUS'
-df_edit.loc[df_edit['Region'] == 'South Africa','iso_a3']='ZAF'
-df_edit.loc[df_edit['Region'] == 'South Korea','iso_a3']='KOR'
-df_edit.loc[df_edit['Region'] == 'Taiwan','iso_a3']='TWN'
-df_edit.loc[df_edit['Region'] == 'United States','iso_a3']='USA'
-
-# update labels and sort data
-df_edit = df_edit.replace('Emissions|GHG Emissions by gas with LULUCF|N2O','Emissions|GHG Emissions by gas with LULUCF|All GHG')
-df_edit = df_edit.sort_values(by = ['Region', 'Scenario']).reset_index()
-
-# replace spaces and special characters in column headers with '_" 
-df_edit.columns = df_edit.columns.str.replace(' ', '_')
-df_edit.columns = df_edit.columns.str.replace('/', '_')
-df_edit.columns = df_edit.columns.str.replace('-', '_')
-
-# convert the column names to lowercase
-df_edit.columns = [x.lower() for x in df_edit.columns]
-
-# remove index column
-df_edit = df_edit.iloc[: , 1:]
-
-# move iso_a3 to the first column
-cols = list(df_edit.columns)
-cols = [cols[-1]] + cols[:-1]
-df_edit = df_edit[cols]
-
-# save processed dataset to csv
-processed_data_file = os.path.join(data_dir, 'GCAM_edit.csv')
-df_edit.to_csv(processed_data_file, index = False)
-
-
-######## Pathway - CAT ########
+######## Pathway - Climate Action Tracker ########
 '''
 Download data and save to your data directory
 Data can be downloaded at the following link:
@@ -326,6 +241,7 @@ modelled_pathways = pd.DataFrame()
 country = []
 link = []
 iso_a3 = []
+# combine all files
 for file in raw_data_files:
     data = pd.read_excel(file, sheet_name = 'ModelledPathways')
     country.append(data.iloc[-8, 3])
@@ -353,12 +269,14 @@ modelled_pathways.to_csv(processed_data_file, index = False)
 
 # create CAT links list
 modelled_pathways_link = pd.DataFrame(list(zip(iso_a3, country, link)), columns = ['iso_a3', 'country', 'link'])
+
 # fix problematic links
 modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'KOR','link'] = 'https://climateactiontracker.org/countries/south-korea/'
 modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'ARE','link'] = 'https://climateactiontracker.org/countries/uae/'
 modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'BBR','link'] = 'https://climateactiontracker.org/countries/uk/'
 modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'EU27','link'] = 'https://climateactiontracker.org/countries/eu/'
 modelled_pathways_link.loc[modelled_pathways_link['iso_a3'] == 'RUS','link'] = 'https://climateactiontracker.org/countries/russian-federation/'
+
 # sort by iso_a3
 modelled_pathways_link = modelled_pathways_link.sort_values('iso_a3')
 
