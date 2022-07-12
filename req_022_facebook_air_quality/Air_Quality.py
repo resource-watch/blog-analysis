@@ -12,6 +12,8 @@ import urllib.request
 import rasterstats
 import time
 from string import ascii_uppercase
+from datetime import date
+import sys
 
 # Set up logging
 # Get the top-level logger object
@@ -359,7 +361,7 @@ def delete_local(ext=None):
     except NameError:
         logging.info('No local files to clean.')
 
-def main():
+def main(new_date_historical):
     logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
     '''
@@ -369,7 +371,6 @@ def main():
 
     # Get a new date that we want to pull data for.
     logging.info('Getting new dates to pull.')
-    new_date_historical = '2022-07-01'
 
     # convert date string to datetime object and go back one day, and generate a string from the datetime object
     first_date = (datetime.datetime.strptime(new_date_historical, DATE_FORMAT) - datetime.timedelta(days=1)).strftime(DATE_FORMAT)
@@ -411,7 +412,8 @@ def main():
 
     # Get a list of the dates that are available.
     logging.info('Getting new dates to pull.')
-    new_dates_forecast = ['2022-07-02', '2022-07-03', '2022-07-04', '2022-07-05', '2022-07-06']
+    new_dates_forecast = [new_date_historical+ datetime.timedelta(days=x) for x in [1,2,3,4,5]]
+    logging.info('New dates:',new_dates_forecast)
 
     if new_dates_forecast:
         # convert date string to datetime object and go back one day
@@ -453,3 +455,11 @@ def main():
         state_zonal.to_csv(os.path.join(DATA_DIR, f'gmao_air_quality_forecast_{new_date_forecast}'+'_state.csv'), index = False)
         # Delete local netcdf files because we will run out of space
         delete_local(ext='.nc4')
+
+#Check if the argument is set for the date to download data
+if len(sys.argv) == 1:
+    logging.info('Please add an arugment for the date you want to download air quality forecasts for in the format YYYY-MM-DD')
+    logging.info('For example run: python Air_Quality.py 2022-07-12')
+#If it is then run the program
+else:  
+    main(sys.argv[1])
