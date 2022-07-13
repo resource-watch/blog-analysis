@@ -14,3 +14,4 @@ Figure SPM.1 | History of global temperature change and causes of recent warming
 
 Figure SPM.7: Overview of mitigation options and their estimated ranges of costs and potentials in 2030.
 - Babiker, M.; Sugiyama, M.; Cohen, B.; Toribio Ramirez, D.; Blok, K. (2022): Data for Figure SPM.7 - Summary for Policymakers of the Working Group III Contribution to the IPCC Sixth Assessment Report. MetadataWorks, 04 April 2022. 10.48490/ayfg-tv12
+ 
