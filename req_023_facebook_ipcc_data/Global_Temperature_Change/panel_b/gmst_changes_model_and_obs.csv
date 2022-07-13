@@ -1,4 +1,39 @@
-Year,gsta_brown_line_hist_ssp245,gsta_brown_shading_bottom_hist_ssp245,gsta_brown_shading_top_hist_ssp245,gsta_green_line_hist_nat,gsta_green_shading_bottom_hist_nat,gsta_green_shading_top_hist_nat,gsta_black_obs
+Conventions,G,BADC-CSV,1
+title,G,Global surface temperature change relative to 1850-1900 from observations and CMIP6 models (human and natural forcings simulations),
+creator,G,Nathan Gillett (nathan.gillett@canada.ca),
+creator,G,Elizaveta Malinina (elizaveta.malinina-rieger@canada.ca),
+activity,G,IPCC AR6,
+feature_type,G,Global Mean Time Series,
+comments,G,"Data is for the black, brown and green lines as well as brown and green shadings in panel (b) of SPM1 Figure in the IPCC Working Group I Contribution to the Sixth Assessment Report: SPM",
+comments,G,Global Surface Temperature Anomalies (GSTA) is computed from CMIP6 models ensemble (historical-ssp245 and hist-nat experiments) and HadCRUT4.6 observations,
+comments,G,years 1850-2019,
+last_revised_date,G,2021-06-29,
+coordinate_variable,1,Year,Year
+long_name,1,Year,Year
+type,1,int,
+long_name,2,gsta_brown_line_hist_ssp245,Degrees C
+comments,2,Global Surface Temperature Anomalies (GSTA) relative to 1850-1900 from CMIP6 simulations with human and natural forcing (mean over ensamble),
+type,2,float,
+long_name,3,gsta_brown_shading_bottom_hist_ssp245,Degrees C
+comments,3,Global Surface Temperature Anomalies (GSTA) anomalies relative to 1850-1900 from CMIP6 simulations with human and natural forcing (5% range over ensamble),
+type,3,float,
+long_name,4,gsta_brown_shading_top_hist_ssp245,Degrees C
+comments,4,Global Surface Temperature Anomalies (GSTA) anomalies relative to 1850-1900 from CMIP6 simulations with human and natural forcing (95% range over ensamble),
+type,4,float,
+long_name,5,gsta_green_line_hist_nat,Degrees C
+comments,5,Global Surface Temperature Anomalies (GSTA) relative to 1850-1900 from CMIP6 simulations with natural forcing only (mean over ensamble),
+type,5,float,
+long_name,6,gsta_green_shading_bottom_hist_nat,Degrees C
+comments,6,Global Surface Temperature Anomalies (GSTA) relative to 1850-1900 from CMIP6 simulations with natural forcing only (5% range over ensamble),
+type,6,float,
+long_name,7,gsta_green_shading_top_hist_nat,Degrees C
+comments,7,Global Surface Temperature Anomalies (GSTA) relative to 1850-1900 from CMIP6 simulations with natural forcing only (95% range over ensamble),
+type,7,float,
+long_name,8,gsta_black_obs,Degrees C
+comments,8,Global Surface Temperature Anomalies (GSTA) relative to 1850-1900 from HadCRUT4.6 observations,
+type,8,float,
+data,,,,,,,
+1,2,3,4,5,6,7,8
 1850,-0.047589067,-0.354805453,0.189713425,0.014601711,-0.161194852,0.196198251,-0.059
 1851,-0.0587609,-0.313444988,0.149283344,0.024195142,-0.132960808,0.179927922,0.049
 1852,-0.002935225,-0.174405998,0.198392534,0.052558101,-0.202665503,0.221705736,0.079
@@ -169,3 +204,4 @@ Year,gsta_brown_line_hist_ssp245,gsta_brown_shading_bottom_hist_ssp245,gsta_brow
 2017,1.100091611,0.727634197,1.781020085,0.047106495,-0.201490233,0.319118598,1.179
 2018,1.170449934,0.806942411,1.872941599,0.044185247,-0.222528144,0.383821734,1.101
 2019,1.189952134,0.738261484,1.870786372,0.049385231,-0.13631973,0.306537486,1.226
+end_data,,,,,,,
