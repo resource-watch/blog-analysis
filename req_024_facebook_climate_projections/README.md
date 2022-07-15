@@ -14,7 +14,6 @@ The NEX-GDDP dataset shows the change in each climate indicator at ten year inte
 
 This analysis calculates the average value of each climate indicator in ten year intervals between 2000 and 2080 at the state and country level. The administrative global area is from [GADM](https://gadm.org/). 
 
-
 ### Indicators
 #### [Projected Change in Extreme Heat Days](https://resourcewatch.org/data/explore/3941bbba-181b-434a-84c3-fcdfa5234735)
 The Projected Change in Extreme Heat Days dataset provides projections on how temperature patterns are likely to change in the coming decades. In particular, an increased quantity of extreme heat days can lead to human and ecosystem threats caused by more frequent, more intense, and longer heat waves. Heat-related illnesses can occur when a person is exposed to high temperatures, such that their body cannot cool itself sufficiently through sweating. When people are exposed to extreme heat, they can suffer from potentially deadly illnesses, such as heat exhaustion and heat stroke. Hot temperatures can also contribute to deaths from heart attacks, strokes, and other forms of cardiovascular disease. Temperature extremes can also worsen chronic conditions such as cardiovascular disease, respiratory disease, cerebrovascular disease, and diabetes-related conditions. Prolonged exposure to high temperatures is associated with increased hospital admissions for cardiovascular, kidney, and respiratory disorders. In addition, prolonged exposure to excessive heat and cold can damage crops and injure or kill livestock. Extreme heat can lead to power outages as heavy demands for air conditioning strain the power grid, while extremely cold weather increases the need for heating fuel.
@@ -41,7 +40,6 @@ The average annual number of dry spells for each yearwas caclulated by extractin
 The freezing point (32°F, 0°C) is a critical temperature threshold for many aspects of life. An increase in the average frost free season means that there are less days with temperatures below the freezing point. The number of days with temperatures below freezing, and when these days occur, can affect [natural ecosystems as well as many sectors of the economy](https://www.epa.gov/climate-indicators/climate-change-indicators-freeze-thaw-conditions). For example, many crops only grow during periods when they are not limited by frost damage. The number of frozen days during a year determines which naturally occurring plants can thrive, what food sources are available for animals, and when and how animals migrate or hibernate. Freezing temperatures also help reduce populations of certain insects and other pests that can damage crops and forests or spread diseases to humans; conversely, a mild winter with fewer days of frost can lead to more of these pests during the following spring and summer. Frozen temperatures also allow precipitation to fall as snow rather than rain, which is important for regional water supplies.
 
 The annual average frost free season for each year was calculated by extracting daily minimum temperature values for a given year and finding the largest number of consecutive days where the minimum temperature exceeded 32°F. The average annual frost free seasons were combined into 31-year averages for the baseline time period of 1960-1990 and nine periods centered on the start of each decade from 2000 to 2080. Then the baseline average was subtracted from each of the nine projected decades to create the projected change in dry spells
-
  
 #### [Projected Change in Cumulative Precipitation](https://resourcewatch.org/data/explore/faf79d2c-5e54-4591-9d70-4bd1029c18e6)
 Precipitation can have [wide-ranging effects on human well-being and ecosystems](https://www.epa.gov/climate-indicators/climate-change-indicators-us-and-global-precipitation). Rainfall, snowfall, and the timing of snowmelt can all affect the amount of surface water and groundwater available for drinking, irrigation, and industry. They also influence river flooding and can determine what types of animals and plants (including crops) can survive in a particular place. Changes in precipitation can disrupt a wide range of natural processes, particularly if these changes occur more quickly than plant and animal species can adapt. Precipitation changes are projected to be more varied across the world, generally showing increases in mean precipitation in high-latitude regions and a pole-ward shift of subtropical arid regions. In addition, precipitation is projected to occur in fewer, but more intense events. Except in the few areas that are projected to see substantial drying, historically extreme precipitation events are expected to become more frequent worldwide. Even as precipitation increases, dry periods are projected to increase in length and frequency.
@@ -53,7 +51,6 @@ The Projected Change in Extreme Precipitation Days dataset provides projections 
 
 The annual average extreme precipitation days for each year was calculated by extracting the daily precipitation values for a given year and summing the number of days where precipitation was greater than the 99th percentile precipitation during the baseline period. The annual average extreme precipitation days were combined into 31-year averages for the baseline time period of 1960-1990 and nine periods centered on the start of each decade from 2000 to 2080. Then each of the nine projected decades were divided by the baseline average to calculate the projected change in extreme precipitation. Values greater than 1 indicate that extreme precipitation is increasing, while values less than one indicate that the number is decreasing.
 
-
 ## Methods
 This analysis calculates the average value of each climate indicator over the state and country level for each of the nine periods centered on the start of each decade from 2000 to 2080. The average value for each state and country was calculated using the [rasterstats](https://pythonhosted.org/rasterstats/) Python module.
 
@@ -64,19 +61,8 @@ This analysis calculates the average value of each climate indicator over the st
 5. Save average value of the raster over the state/country regions.
 6. Export the results as a CSV file.
 
-
 ## Final Data
-The final data can be viewed in the data directory. 
-1. NEX_GDDP_45_countries.csv
-    - Country level mean value for RCP 4.5 
-2. NEX_GDDP_85_countries.csv
-    - Country level mean value for RCP 8.5 
-3. NEX_GDDP_45_states.csv
-   - State level mean value for RCP 4.5 
-4. NEX_GDDP_85_states.csv
-    - State level mean value for RCP 8.5 
-
-
+The final data can be viewed in the data directory.
 
 ## References
 - Gassert, F., E. Cornejo, and E. Nilson. 2021. “Making Climate Data Accessible: Methods for Producing NEX-GDDP and LOCA Downscaled Climate Indicators” Technical Note. Washington, DC: World Resources Institute. Available online at https://www.wri.org/research/making-climate-data-accessible. www.resourcewatch.org.
