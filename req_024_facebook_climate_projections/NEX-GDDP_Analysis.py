@@ -93,5 +93,6 @@ def calculate_nexgddp_average(indicator, regionsFile, output_file):
 
 #Run calculation
 for i in np.arange(len(indicators)):
-    calculate_nexgddp_average(indicators[i],'gadm_levels/gadm36_0.shp', outFileFormat.format(indicators[i]))
+    calculate_nexgddp_average(indicators[i],'gadm_levels/gadm36_0.shp', 'country_level_{}_average.csv'.format(indicators[i]))
+    calculate_nexgddp_average(indicators[i],'gadm_levels/gadm36_1.shp', 'state_level_{}_average.csv'.format(indicators[i]))
 
