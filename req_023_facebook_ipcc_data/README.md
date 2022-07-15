@@ -16,7 +16,7 @@ Figure SPM.7: Overview of mitigation options and their estimated ranges of costs
 - Babiker, M.; Sugiyama, M.; Cohen, B.; Toribio Ramirez, D.; Blok, K. (2022): Data for Figure SPM.7 - Summary for Policymakers of the Working Group III Contribution to the IPCC Sixth Assessment Report. MetadataWorks, 04 April 2022. 10.48490/ayfg-tv12
  
 # Climate Scope
-Additionally data from Bloomberg NEF's Global Climate Scope 2021 is available in the folder [Climate_Scope](https://github.com/resource-watch/blog-analysis/tree/master/req_023_facebook_ipcc_data/Climate_Scope). 
+Additionally data from Bloomberg NEF's [Global Climate Scope 2021](https://global-climatescope.org/) is available in the folder [Climate_Scope](https://github.com/resource-watch/blog-analysis/tree/master/req_023_facebook_ipcc_data/Climate_Scope). 
 
 Climatescope is a unique market assessment, interactive report and index that evaluates the conditions for energy transition investment globally and evaluates their ability to attract capital for low-carbon technologies while building a greener economy. It also provides a snapshot of where clean energy policy and finance stand today and a guide to what can happen in the future. This year, BNEF gathered detailed information on 136 markets globally, or 107 emerging markets and 29 developed nations. Climatescope 2021 also expanded from a power focus, to a wider energy transition scope, including power, transport and buildings. 
 
@@ -30,7 +30,7 @@ It is important to note that several key indicators that contribute to the above
 
 Read more on their methodology [here](https://global-climatescope.org/about/methodology/).
 
-The overall Climate Scope 2021 score is available in the folder [Climate_Scope](https://github.com/resource-watch/blog-analysis/tree/master/req_023_facebook_ipcc_data/Climate_Scope. The scores were calculated based on three topics with their associated weights in parentheses: fundamentals (50%), opportunities (25%), and experience (25%). THe Climate Scope 2021 score is out of five. Additional data on each country is available in their [larger Excel spreadsheet](https://global-climatescope.org/CS2021_Model.xlsm), which requires enabling macros.
+The overall Climate Scope 2021 score is available in the folder [Climate_Scope](https://github.com/resource-watch/blog-analysis/tree/master/req_023_facebook_ipcc_data/Climate_Scope). The scores were calculated based on three topics with their associated weights in parentheses: fundamentals (50%), opportunities (25%), and experience (25%). THe Climate Scope 2021 score is out of five. Additional data on each country is available in their [larger Excel spreadsheet](https://global-climatescope.org/CS2021_Model.xlsm), which requires enabling macros.
 
 ## Citations:
 - Demôro, L., Maia, S., Aminoff, Felicia. 2021. Climatescope 2021: Energy Transition Factbook. Bloomberg NEF. https://global-climatescope.org/
