@@ -40,19 +40,26 @@ if not os.path.exists(data_dir):
     os.makedirs(data_dir)
 os.chdir(data_dir)
 
+#Define list of indicators
 indicators = [
-    'diff-annual_tasmin',
-    'diff-annual_tasmax',
-    'diff-tavg-tasmin_tasmax',
-    'diff-frostfree_tasmin',
-    'diff-gt-q99_tasmax',
-    'ch-dryspells_pr',
-    'ch-annual_pr',
-    'ch-gt-q99_pr'
+    'diff-annual_tasmin', #change in minimum temperature
+    'diff-annual_tasmax', #change in maximum temperature
+    'diff-tavg-tasmin_tasmax', #change in average temperature
+    'diff-frostfree_tasmin', #change in length of frost free season
+    'diff-gt-q99_tasmax', #change in number of extreme heat days
+    'ch-dryspells_pr', #change in lenght of dry spells
+    'ch-annual_pr', #change in cumulative precipitation
+    'ch-gt-q99_pr' #change in number of extreme precipitation days
 ]
-fileFormat = os.path.join(os.getcwd(),'nexgddp/stacked-{}_rcp85_ens_{}_nexgddp.tif')
 
+#Define file format of rasters for each indicator and year
+fileFormat = os.path.join(os.getcwd(),'nexgddp/stacked-{}_rcp85_ens_{}_nexgddp.tif')
+#Define output file format
+outFileFormat = '{}_average.csv'
+
+#Define list of periods
 yearCoverageList = ['1985-2015', '1995-2025', '2005-2035', '2015-2045', '2025-2055', '2035-2065', '2045-2075', '2055-2085', '2065-2095']
+#Define corresponding list of period centers
 yearList = ['2000','2010','2020','2030','2040','2050','2060','2070','2080']
 
 #Function for calculating the average temperature per year
@@ -84,20 +91,7 @@ def calculate_nexgddp_average(indicator, regionsFile, output_file):
     regions = regions[region_cols]
     regions.to_csv(output_file,index=False)
 
-#
-# countries = os.path.join(os.getenv('GADM_DIR'),'level0.shp')
-# states = os.path.join(os.getenv('GADM_DIR'),'level1.shp')
-#
-# #Use function to calculate mean value and export
-# calculate_rcp_over_region('45', countries, 'results/NEX_GDDP_45_countries.csv')
-# calculate_rcp_over_region('85', countries, 'results/NEX_GDDP_85_countries.csv')
-# calculate_rcp_over_region('45', states, 'results/NEX_GDDP_45_states.csv')
-# calculate_rcp_over_region('85', states, 'results/NEX_GDDP_85_states.csv')
-#
-
-outFileFormat = '{}_average.csv'
+#Run calculation
 for i in np.arange(len(indicators)):
     calculate_nexgddp_average(indicators[i],'gadm_levels/gadm36_0.shp', outFileFormat.format(indicators[i]))
-#
-#
-#
+
