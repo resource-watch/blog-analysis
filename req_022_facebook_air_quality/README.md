@@ -16,26 +16,10 @@ This dataset is provided by the source as netcdf files, with one file for each h
 6. The original source units are kept for fine particulate matter.
 7. Export the daily files as tif files.
 
-
 The second objective of this analysis is to calculate the daily average/maximum value at state-level, following the steps:
 1. Download the state-level shape file from GADM.
 2. Calculate the state-level average for nitrogen dioxide and PM2.5, and state-level maximum for ozone.
 3. Export the results as a CSV file.
-
-### Final Data
-The final data can be viewed in the directory [data](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/).
-1. [gmao_air_quality_historical_2022-07-01_state.csv](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/gmao_air_quality_historical_2022-07-01_state.csv)
-    - State-level daily average nitrogen dioxide and PM2.5, and maximum ozone on July 1st, 2022.
-2. [gmao_air_quality_forecast_2022-07-02_state.csv](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/gmao_air_quality_forecast_2022-07-02_state.csv)
-    - State-level forecast daily average nitrogen dioxide and PM2.5, and maximum ozone on July 2nd, 2022.
-3. [gmao_air_quality_forecast_2022-07-03_state.csv](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/gmao_air_quality_forecast_2022-07-03_state.csv)
-    - State-level forecast daily average nitrogen dioxide and PM2.5, and maximum ozone on July 3rd, 2022.
-4. [gmao_air_quality_forecast_2022-07-04_state.csv](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/gmao_air_quality_forecast_2022-07-04_state.csv)
-    - State-level forecast daily average nitrogen dioxide and PM2.5, and maximum ozone on July 4th, 2022.
-5. [gmao_air_quality_forecast_2022-07-05_state.csv](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/gmao_air_quality_forecast_2022-07-05_state.csv)
-    - State-level forecast daily average nitrogen dioxide and PM2.5, and maximum ozone on July 5th, 2022.
-6. [gmao_air_quality_forecast_2022-07-06_state.csv](https://github.com/resource-watch/blog-analysis/blob/master/req_022_facebook_air_quality/data/gmao_air_quality_forecast_2022-07-06_state.csv)
-    - State-level forecast daily average nitrogen dioxide and PM2.5, and maximum ozone on July 6th, 2022.
 
 ### References
 - Knowland, K.E., C.A. Keller, and R. Lucchesi. 2019. File Specification for GEOS-CF Products. GMAO Office Note no. 17 (Version 1.0). [https://gmao.gsfc.nasa.gov/pubs/office_notes.php](https://gmao.gsfc.nasa.gov/pubs/office_notes.php)
