@@ -24,15 +24,14 @@ The second objective of this analysis is to calculate the rate of precipitation 
 3. Convert the total change to percent change, using average precipitation during the standard baseline period (1901-2000) as the denominator.
 4. Export the results as CSV files.
 
-
 The third objective of this analysis is to calculate a smooth precipitation time series from 1901 to 2019 at the state/provincial level. *This objective followed the smooth trend method of the [U.S. and Global Mean Temperature and Precipitation indicator (Exhibit 7)](https://cfpub.epa.gov/roe/indicator.cfm?i=89#7).* This analysis was done using the file [Regression_Rate_Change_and_Smooth.py ](https://github.com/resource-watch/blog-analysis/blob/master/req_019_facebook_total_precipitation/Regression_Rate_Change_and_Smooth.py). The smoothed precipitation time series was created using a 9-point binomial filter where 4 years on each side of a given value are averaged with decreasing weights further from the center year ([Aubury and Luk, 1995](www.doc.ic.ac.uk/~wl/papers/bf95.pdf)).
 
 ### Results
 The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results) where all precipitation values are given in millimeter.
-- The original country level data was named: GPCC_annual_country_\{*country ISO code*\}.csv
-- The original state/provincial level data was named: GPCC_annual_state_\{*country ISO code*\}.csv
-- The state/provincial level regression and rate change result was named: GPCC_annual_country_\{*country ISO code*\}\_regression_and_rate_change.csv
-- The state/provincial level smoothed data was named: GPCC_annual_country_\{*country ISO code*\}\_smooth.csv
+- [GPCC_annual_country_level_mean.csv](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results/GPCC_annual_country_level_mean.csv): The original country level mean annual total precipitation.
+- [GPCC_annual_state_level_mean.csv](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results/GPCC_annual_state_level_mean.csv): The original state/provincial level mean annual total precipitation.
+- [GPCC_annual_state_level_regression_and_rate_change.csv](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results/GPCC_annual_state_level_regression_and_rate_change.csv): The state/provincial level regression and rate change results. 
+- [GPCC_annual_state_level_mean_smooth.csv](https://github.com/resource-watch/blog-analysis/tree/master/req_019_facebook_total_precipitation/results/GPCC_annual_state_level_mean_smooth.csv): The state/provincial level smoothed data. 
 
 ### References
 - Schneider, Udo; Becker, Andreas; Finger, Peter; Rustemeier, Elke; Ziese, Markus. (2020). GPCC Full Data Monthly Product Version 2020 at 0.25°: Monthly Land-Surface Precipitation from Rain-Gauges built on GTS-based and Historical Data. DOI: [10.5676/DWD_GPCC/FD_M_V2020_025](10.5676/DWD_GPCC/FD_M_V2020_025)
