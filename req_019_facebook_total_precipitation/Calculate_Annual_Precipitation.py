@@ -14,7 +14,6 @@ import rasterstats
 import dotenv
 import geopandas as gpd
 import pandas as pd
-dotenv.load_dotenv('/home/weiqi_tori/GitHub/cred/.env')
 
 # set up logging
 # get the top-level logger object
