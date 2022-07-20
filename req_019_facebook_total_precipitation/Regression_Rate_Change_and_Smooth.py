@@ -2,9 +2,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 import os
 import pandas as pd
-
 import dotenv
-dotenv.load_dotenv('/home/weiqi_tori/GitHub/cred/.env')
 
 # Get script folder
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
