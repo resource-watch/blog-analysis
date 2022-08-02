@@ -10,6 +10,7 @@ import datetime
 import subprocess
 import urllib.request
 import rasterstats
+import rasterio
 import time
 from string import ascii_uppercase
 from datetime import date
@@ -124,9 +125,14 @@ def fetch(new_date, first_date, unformatted_source_url, period):
         while tries <= 5:
             try:
                 logging.info('Retrieving {}'.format(f))
-                # download files from url and put in specified file location (f)
-                urllib.request.urlretrieve(url, f)
-                # if successful, add the file to the list of files we have downloaded
+                # download if the file does not exist already
+                if not os.path.exists(f):
+                    # download files from url and put in specified file location (f)
+                    urllib.request.urlretrieve(url, f)
+                else:
+                    # otherwise skip download
+                    logging.info('{} is already downloaded'.format(f))
+                # if successful, add the file to the list of files we have downloaded 
                 files.append(f)
                 files_for_current_date.append(f)
                 break
@@ -177,6 +183,8 @@ def convert(files, var, period):
     tifs = []
     for f in files:
         logging.info('Converting {} to tiff'.format(f))
+        
+        
         # generate the subdatset name for current netcdf file for a particular variable
         sds_path = SDS_NAME.format(fname=f, var=var)
         # only one band available in each file, so we will pull band 1
@@ -184,8 +192,9 @@ def convert(files, var, period):
         # generate a name to save the tif file we will translate the netcdf file into
         tif = getTiffName(file=f, period=period, var=var)
         # translate the netcdf into a tif
-        cmd = ['gdal_translate', '-b', str(band), '-q', '-a_nodata', str(NODATA_VALUE), '-a_srs', 'EPSG:4326', sds_path, tif]
-        subprocess.call(cmd)
+        if not os.path.exists(tif):
+            cmd = ['gdal_translate', '-b', str(band), '-q', '-a_nodata', str(NODATA_VALUE), '-a_srs', 'EPSG:4326', sds_path, tif]
+            subprocess.call(cmd)
         # add the new tif files to the list of tifs
         tifs.append(tif)
 
@@ -328,16 +337,23 @@ def zonal_statistics(tifs, var, state_shp_df):
     '''
     for tif in tifs:
         if var == 'O3':
-            stats = rasterstats.zonal_stats(os.path.join(DATA_DIR, 'gadm36_1.shp'), tif, nodata = NODATA_VALUE, stats = ['max'])
-            stats_df = pd.DataFrame(stats)
-
+            #calculate average per region within regions geodataframe
+            with rasterio.open(tif) as src:
+                affine = src.transform
+                array = src.read(1)
+                stats = rasterstats.zonal_stats(os.path.join(DATA_DIR, 'gadm36_1.shp'), array, affine=affine,nodata = NODATA_VALUE,stats=['max'],all_touched=True)
+                stats_df = pd.DataFrame(stats)
+            
             state_max = state_shp_df.copy()
             state_max[str(var)+'_max'] = stats_df['max']
             return state_max
             # state_max.to_csv(tif.split('.')[0]+'_state_max.csv', index = False)
         else:
-            stats = rasterstats.zonal_stats(os.path.join(DATA_DIR, 'gadm36_1.shp'), tif, nodata = NODATA_VALUE, stats = ['mean'])
-            stats_df = pd.DataFrame(stats)
+            with rasterio.open(tif) as src:
+                affine = src.transform
+                array = src.read(1)
+                stats = rasterstats.zonal_stats(os.path.join(DATA_DIR, 'gadm36_1.shp'), array, affine=affine, nodata = NODATA_VALUE, stats = ['mean'],all_touched=True)
+                stats_df = pd.DataFrame(stats)
             
             state_mean = state_shp_df.copy()
             state_mean[str(var)+'_mean'] = stats_df['mean']
@@ -400,7 +416,7 @@ def main(new_date_historical):
         for hour in hours:
             # Delete local tiff files because we will run out of space
             delete_local(ext=hour+'.tif')
-    
+
     state_zonal.to_csv(os.path.join(DATA_DIR, f'gmao_air_quality_historical_{new_date_historical}'+'_state.csv'), index = False)
     # Delete local netcdf files because we will run out of space
     delete_local(ext='.nc4')
@@ -412,7 +428,7 @@ def main(new_date_historical):
 
     # Get a list of the dates that are available.
     logging.info('Getting new dates to pull.')
-    new_dates_forecast = [new_date_historical+ datetime.timedelta(days=x) for x in [1,2,3,4,5]]
+    new_dates_forecast = [(datetime.datetime.strptime(new_date_historical, DATE_FORMAT)+ datetime.timedelta(days=x)).strftime(DATE_FORMAT) for x in [1,2,3,4,5]]
     logging.info('New dates:',new_dates_forecast)
 
     if new_dates_forecast:
