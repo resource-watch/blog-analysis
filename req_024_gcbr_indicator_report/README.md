@@ -13,10 +13,10 @@ This file describes analysis that was done by the Resource Watch team for the Go
 
 
 ### Methods
-This analysis was performed using Google Earth Engine's Python API and is available in this [Jupyter notebook](https://github.com/resource-watch/blog-analysis/tree/master/req_024_gcbr_indicator_report/GCBR_Indicator_Report.ipynb).
+This analysis was performed using Google Earth Engine's Python API and is available in this [Jupyter notebook](https://github.com/resource-watch/blog-analysis/blob/req_024_gcbr_indicator_report/req_024_gcbr_indicator_report/GCBR_Indicator_Report.ipynb).
 
 ### Results
-The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/master/req_024_gcbr_indicator_report/results).
+The results of this analysis can be viewed in the directory [results](https://github.com/resource-watch/blog-analysis/tree/req_024_gcbr_indicator_report/req_024_gcbr_indicator_report/results).
 
 ### References
 - Didan, K. (2021). MODIS/Terra Vegetation Indices 16-Day L3 Global 250m SIN Grid V061. NASA EOSDIS Land Processes Distributed Active Archive Center. [doi:10.5067/MODIS/MOD13Q1.061](https://doi.org/10.5067/MODIS/MOD13Q1.061).
@@ -27,7 +27,4 @@ The results of this analysis can be viewed in the directory [results](https://gi
 - Jean-Francois Pekel, Andrew Cottam, Noel Gorelick, Alan S. Belward, High-resolution mapping of global surface water and its long-term changes. Nature 540, 418-422 (2016). [doi:10.1038/nature20584](https://doi.org/10.1038/nature20584)
 - Martin Claverie, Eric Vermote, and NOAA CDR Program (2014): NOAA Climate Data Record (CDR) of Leaf Area Index (LAI) and Fraction of Absorbed Photosynthetically Active Radiation (FAPAR), Version 4. NOAA National Climatic Data Center. [doi:10.7289/V5M043BX](https://doi.org/10.7289/V5M043BX)
 - MODIS Collection 6 NRT Hotspot / Active Fire Detections MCD14DL. Available on-line https://earthdata.nasa.gov/firms. [doi:10.5067/FIRMS/MODIS/MCD14DL.NRT.006](https://doi.org/10.5067/FIRMS/MODIS/MCD14DL.NRT.006)
-
-
-
 
